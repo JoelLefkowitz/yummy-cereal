@@ -43,3 +43,20 @@ class Validator:
         """
         msg = f"The config file failed validation.\nIssue catagory: {self.category}\nIssue subcatagory: {self.subcategory}\nDetails: {details}"
         raise ParserValidationError(msg)
+
+
+def validate(config_path: str) -> dict:
+    """Apply all validation functions to the given configuration
+    
+    Args:
+        config_path (str): Path to the configuration file
+    
+    Returns:
+        Any: Validated configuration
+    """
+    config = read(config_path)
+
+    # Validate structure first to allow simpler validator designs
+    for validator in []:
+        validator.validate(config)
+    return config
