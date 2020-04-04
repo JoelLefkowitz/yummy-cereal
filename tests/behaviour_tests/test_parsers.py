@@ -8,14 +8,15 @@ from pytest_bdd import (
     when,
 )
 
-# from pyimport import path_guard;
-# path_guard("..")
+from pyimport import path_guard
+
+path_guard("../..")
 
 from fixtures.menu_classes import Menu, Course, Dish
 from yummy_cereal import annotations_parser_factory, named_parser, list_or_single_parser
 
 
-@scenario("parsers.feature", "Parsing a menu")
+@scenario("features/parsers.feature", "Parsing a menu")
 def test_parsing_a_menu():
     """Parsing a menu."""
 

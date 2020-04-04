@@ -1,5 +1,8 @@
 from functools import wraps
 from typing import Any, TypeVar, List, Union
+from pyimport import path_guard
+
+path_guard("..")
 from parser_factories import Parser
 from exceptions import ConfigTypeError
 
@@ -35,7 +38,7 @@ def list_parser(parser_function: Parser[T]) -> Parser[List[T]]:
 
 def list_or_single_parser(
     parser_function: Parser[T],
-) -> Union(Parser[T], Parser[List[T]]):
+) -> Union[Parser[T], Parser[List[T]]]:
     @wraps(parser_function)
     def parse_list(config: List):
 

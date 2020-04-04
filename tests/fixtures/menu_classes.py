@@ -1,10 +1,11 @@
 from dataclasses import dataclass
-from typing import List
+from typing import List, Any
 
 
 @dataclass
 class Dish:
     name: str
+    details: Any = None
 
 
 @dataclass

@@ -8,8 +8,8 @@ def full_menu():
         "Courses": {
             "Appetizers": ["Fruit", "Muesli"],
             "Mains": [
-                {"Pastas": ["Penne", "Bow-tie"]},
-                {"Pizzas": ["Margarita", "Farmhouse"]},
+                {"Pasta": ["Penne", "Bow-tie"]},
+                {"Pizza": ["Margarita", "Farmhouse"]},
             ],
             "Desserts": ["Cake", "Custard"],
             "Drinks": ["Tea", "Coffee"],
@@ -50,10 +50,18 @@ def nested_fields_menu():
         "Language": "English",
         "Appetizers": ["Fruit", "Muesli"],
         "Mains": [
-            {"Pastas": ["Penne", "Bow-tie"]},
-            {"Pizzas": ["Margarita", "Farmhouse"]},
+            {"Pasta": ["Penne", "Bow-tie"]},
+            {"Pizza": ["Margarita", "Farmhouse"]},
         ],
         "Desserts": None,
         "Drinks": None,
         "Wines": None,
+    }
+
+
+@pytest.fixture
+def single_course_menu():
+    return {
+        "name": "Mains",
+        "dishes": {"Pasta": ["Penne", "Bow-tie"], "Pizza": ["Margarita", "Farmhouse"],},
     }
