@@ -1,6 +1,7 @@
 import subprocess
-from setuptools import find_packages, setup
 from distutils.core import Command
+
+from setuptools import find_packages, setup
 
 __version__ = "0.1.0"
 

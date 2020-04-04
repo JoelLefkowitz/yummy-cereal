@@ -1,10 +1,12 @@
 from typing import Dict
+
 import pytest
 from pyimport import path_guard
 
 path_guard("../..")
-from yummy_cereal import ValidatedParser, annotations_parser_factory, InvalidConfig
-from fixtures.menu_classes import Dish, Course
+
+from fixtures.menu_classes import Course, Dish
+from yummy_cereal import InvalidConfig, ValidatedParser, annotations_parser_factory
 
 
 def test_ValidatedParser() -> None:
@@ -14,7 +16,7 @@ def test_ValidatedParser() -> None:
     assert parser("1") == 1
     assert parser("2") != 1
 
-    with pytest.rasies(InvalidConfig):
+    with pytest.raises(InvalidConfig):
         parser(3)
 
 

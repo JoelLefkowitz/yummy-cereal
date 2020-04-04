@@ -1,19 +1,14 @@
 # coding=utf-8
 """Parser feature tests."""
 
-from pytest_bdd import (
-    given,
-    scenario,
-    then,
-    when,
-)
-
 from pyimport import path_guard
 
 path_guard("../..")
 
-from fixtures.menu_classes import Menu, Course, Dish
-from yummy_cereal import annotations_parser_factory, named_parser, list_or_single_parser
+from pytest_bdd import given, scenario, then, when
+
+from fixtures.menu_classes import Course, Dish, Menu
+from yummy_cereal import annotations_parser_factory, list_or_single_parser, named_parser
 
 
 @scenario("features/parsers.feature", "Parsing a menu")

@@ -1,10 +1,8 @@
+from .exceptions import ConfigTypeError
 from functools import wraps
-from typing import Any, TypeVar, List, Union
-from pyimport import path_guard
+from typing import Any, List, TypeVar, Union
+from .parser_factories import Parser
 
-path_guard("..")
-from parser_factories import Parser
-from exceptions import ConfigTypeError
 
 T = TypeVar("T")
 

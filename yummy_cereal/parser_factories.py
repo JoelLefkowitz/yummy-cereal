@@ -1,12 +1,11 @@
-from typing import Any, Generic, List, Dict, Optional, Protocol, Tuple, TypeVar
 from dataclasses import dataclass
-from utils import cls_annotations
-from exceptions import InvalidConfig, ConfigTypeError
-
+from .exceptions import ConfigTypeError, InvalidConfig
+from typing import Any, Dict, Generic, List, Optional, Protocol, Tuple, TypeVar, Union
+from .utils import cls_annotations
 
 T = TypeVar("T")
 
-Result = Tuple[bool, Optional[str]]
+Result = Tuple[bool, str]
 
 
 class Parser(Protocol[T]):
@@ -15,7 +14,7 @@ class Parser(Protocol[T]):
 
 
 class Validator(Protocol):
-    def __call__(self, config: Any) -> Result:
+    def __call__(self, config: Any) -> Union[bool, Result]:
         ...
 
 
@@ -33,7 +32,8 @@ class ValidatedParser(Generic[T]):
 
     def validate(self, config: Any) -> None:
         for validator in self.validators:
-            valid, msg = validator(config)
+            result = validator(config)
+            valid, msg = result if isinstance(result, tuple) else result, None
 
             if not valid:
                 raise InvalidConfig(msg, config)
