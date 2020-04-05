@@ -8,7 +8,7 @@ path_guard("../..")
 from pytest_bdd import given, scenario, then, when
 
 from fixtures.menu_classes import Course, Dish, Menu
-from yummy_cereal import AnotatedFieldsParser
+from yummy_cereal import AnotatedFieldsParser, list_or_single_parser, named_parser
 
 
 @pytest.fixture(scope="module")
@@ -34,12 +34,20 @@ def create_menu_parser(context):
         cls=Dish, collector_field="details", child_parsers={"details": dict}
     )
 
+    named_dish_list_parser = named_parser(list_or_single_parser(dish_parser))
+
     course_parser = AnotatedFieldsParser(
-        cls=Course, collector_field="dishes", child_parsers={"dishes": dish_parser}
+        cls=Course,
+        collector_field="dishes",
+        child_parsers={"dishes": named_dish_list_parser},
     )
 
+    named_course_list_parser = named_parser(list_or_single_parser(course_parser))
+
     context["menu_parser"] = AnotatedFieldsParser(
-        cls=Menu, collector_field="courses", child_parsers={"courses": course_parser}
+        cls=Menu,
+        collector_field="courses",
+        child_parsers={"courses": named_course_list_parser},
     )
 
 
@@ -47,10 +55,16 @@ def create_menu_parser(context):
 def parse_menu(context, full_menu):
     """I parse the menu."""
     menu_parser = context["menu_parser"]
-    context["menu_objs"] = menu_parser(full_menu)
+    context["menu"] = menu_parser(full_menu)
 
 
 @then("I recieve menu objects")
 def valid_menu_objs(context):
     """I recieve menu objects."""
-    raise NotImplementedError
+    menu = context["menu"]
+    assert ["Appetizers", "Mains", "Desserts", "Drinks", "Wines"] == [
+        i.name for i in menu.courses
+    ]
+
+    main_course = next(course for course in menu.courses if course.name == "Mains")
+    assert ["Pasta", "Pizza"] == [i.name for i in main_course.dishes]

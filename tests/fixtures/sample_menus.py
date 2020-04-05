@@ -4,8 +4,8 @@ import pytest
 @pytest.fixture
 def full_menu():
     return {
-        "Language": "English",
-        "Courses": {
+        "language": "English",
+        "courses": {
             "Appetizers": ["Fruit", "Muesli"],
             "Mains": {
                 "Pasta": {"shapes": ["Penne", "Bow-tie"]},
@@ -21,8 +21,8 @@ def full_menu():
 @pytest.fixture
 def simple_menu():
     return {
-        "Language": "English",
-        "Courses": {
+        "language": "English",
+        "courses": {
             "Appetizers": None,
             "Mains": None,
             "Desserts": None,
@@ -35,7 +35,7 @@ def simple_menu():
 @pytest.fixture
 def implicit_names_menu():
     return {
-        "Language": "English",
+        "language": "English",
         "Appetizers": None,
         "Mains": None,
         "Desserts": None,
@@ -47,7 +47,7 @@ def implicit_names_menu():
 @pytest.fixture
 def nested_fields_menu():
     return {
-        "Language": "English",
+        "language": "English",
         "Appetizers": ["Fruit", "Muesli"],
         "Mains": {
             "Pasta": {"shapes": ["Penne", "Bow-tie"]},
