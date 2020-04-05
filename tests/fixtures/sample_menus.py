@@ -7,10 +7,10 @@ def full_menu():
         "Language": "English",
         "Courses": {
             "Appetizers": ["Fruit", "Muesli"],
-            "Mains": [
-                {"Pasta": ["Penne", "Bow-tie"]},
-                {"Pizza": ["Margarita", "Farmhouse"]},
-            ],
+            "Mains": {
+                "Pasta": {"shapes": ["Penne", "Bow-tie"]},
+                "Pizza": {"toppings": ["Margarita", "Farmhouse"]},
+            },
             "Desserts": ["Cake", "Custard"],
             "Drinks": ["Tea", "Coffee"],
             "Wines": ["Red", "Rose"],
@@ -49,10 +49,10 @@ def nested_fields_menu():
     return {
         "Language": "English",
         "Appetizers": ["Fruit", "Muesli"],
-        "Mains": [
-            {"Pasta": ["Penne", "Bow-tie"]},
-            {"Pizza": ["Margarita", "Farmhouse"]},
-        ],
+        "Mains": {
+            "Pasta": {"shapes": ["Penne", "Bow-tie"]},
+            "Pizza": {"toppings": ["Margarita", "Farmhouse"]},
+        },
         "Desserts": None,
         "Drinks": None,
         "Wines": None,
@@ -63,5 +63,26 @@ def nested_fields_menu():
 def single_course_menu():
     return {
         "name": "Mains",
-        "dishes": {"Pasta": ["Penne", "Bow-tie"], "Pizza": ["Margarita", "Farmhouse"],},
+        "Pasta": {"shapes": ["Penne", "Bow-tie"]},
+        "Pizza": {"toppings": ["Margarita", "Farmhouse"]},
     }
+
+
+@pytest.fixture
+def single_dish_menu():
+    return {
+        "Pasta": {"details": {"shapes": ["Penne", "Bow-tie"]}},
+    }
+
+
+@pytest.fixture
+def simple_dishes_menu():
+    return [
+        {"name": "Pasta", "details": {"shapes": ["Penne", "Bow-tie"]}},
+        {"name": "Pizza", "details": {"toppings": ["Margarita", "Farmhouse"]}},
+    ]
+
+
+@pytest.fixture
+def simple_single_dish_menu():
+    return {"name": "Pasta", "details": {"shapes": ["Penne", "Bow-tie"]}}

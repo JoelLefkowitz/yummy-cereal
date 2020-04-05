@@ -6,7 +6,7 @@ from pyimport import path_guard
 path_guard("../..")
 
 from fixtures.menu_classes import Course, Dish
-from yummy_cereal import InvalidConfig, ValidatedParser, annotations_parser_factory
+from yummy_cereal import InvalidConfig, ValidatedParser, AnotatedFieldsParser
 
 
 def test_ValidatedParser() -> None:
@@ -20,12 +20,14 @@ def test_ValidatedParser() -> None:
         parser(3)
 
 
-def test_annotations_parser_factory(single_course_menu: Dict) -> None:
-    parser = annotations_parser_factory(
-        cls=Course,
-        omit_fields=None,
-        collector_field="dishes",
-        child_parsers={"Dish": Dish},
+def test_AnotatedFieldsParser(single_course_menu: Dict) -> None:
+    parser = AnotatedFieldsParser(
+        cls=Course, collector_field="dishes", child_parsers={"dishes": dict}
     )
 
-    parser(single_course_menu)
+    course = parser(single_course_menu)
+    assert isinstance(course, Course)
+    assert course.name == "Mains"
+
+    # To decouple tests, no child parsers are used
+    assert isinstance(course.dishes, dict)

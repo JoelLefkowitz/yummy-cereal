@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from .exceptions import ConfigTypeError, InvalidConfig
 from typing import Any, Dict, Generic, List, Optional, Protocol, Tuple, TypeVar, Union
 from .utils import cls_annotations
@@ -39,29 +39,50 @@ class ValidatedParser(Generic[T]):
                 raise InvalidConfig(msg, config)
 
 
-def annotations_parser_factory(
-    cls: T,
-    omit_fields: List[str] = [],
-    collector_field: Optional[str] = None,
-    child_parsers: ParserSet = {},
-) -> Parser[T]:
-    def anotated_fields_parser(config: Dict) -> T:
+@dataclass
+class AnotatedFieldsParser:
+    cls: T
+    collector_field: Optional[str] = None
+    omit_fields: List[str] = field(default_factory=list)
+    child_parsers: ParserSet = field(default_factory=dict)
+
+    def __call__(self, config: Dict) -> T:
 
         if not isinstance(config, dict):
             raise ConfigTypeError(config, dict)
 
-        annotations = cls_annotations(cls)
-        annotated_fields = set(annotations) - set(omit_fields)
-        data = {k: v for k, v in config.items() if k in annotated_fields}
+        return self.create_object(self.extract(config))
 
-        if collector_field:
-            data[collector_field] = all(map(config.pop, data))
+    @property
+    def annotations(self) -> Dict:
+        annots = cls_annotations(self.cls)
+        annots.update(self.child_parsers)
+        return annots
 
-        field_parsers = annotations.update(child_parsers)
-        data = {k: field_parsers["k"](v) for k, v in data.items()}
+    @property
+    def annotated_fields(self) -> List[str]:
+        return (
+            self.annotations.keys()
+            if not self.omit_fields
+            else list(set(self.annotations) - set(self.omit_fields))
+        )
 
-        obj = cls.__new__()
-        obj.update(**data)
+    def extract(self, config) -> Dict:
+        obj_data = {self.collector_field: {}} if self.collector_field else {}
+
+        for k, v in config.items():
+            if k in self.annotated_fields:
+                obj_data[k] = v
+
+            elif self.collector_field:
+                obj_data[self.collector_field][k] = v
+
+        if self.annotations:
+            obj_data = {k: self.annotations[k](v) for k, v in obj_data.items()}
+
+        return obj_data
+
+    def create_object(self, obj_data: Dict) -> T:
+        obj = self.cls.__new__(self.cls)
+        obj.__dict__.update(**obj_data)
         return obj
-
-    return anotated_fields_parser
