@@ -8,14 +8,14 @@ class InvalidConfig(Exception):
 
 
 class ConfigTypeError(Exception):
-    def __init__(self, config: Any, expected_type: Any) -> None:
-        msg = f"Config is not the expected type\nExpected: {expected_type}\nRecieved: {config}"
+    def __init__(self, config: Any) -> None:
+        msg = (
+            f"Config is not a dictionary type\nExpected: Dictionary\nRecieved: {config}"
+        )
         super().__init__(msg)
 
 
-class ConfigFormatError(Exception):
-    def __init__(self, msg: str, config: Any) -> None:
-        msg = (
-            f"Config is not in the expected format\nExpected: {msg}\nRecieved: {config}"
-        )
+class AnnotationTypeError(Exception):
+    def __init__(self, annotation_type: Any, config: Any) -> None:
+        msg = f"Annotated field type failed to parse config\nType: {annotation_type}\nConfig: {config}"
         super().__init__(msg)

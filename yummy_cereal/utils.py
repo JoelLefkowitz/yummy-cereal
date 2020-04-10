@@ -9,10 +9,13 @@ def cls_annotations(cls: Any) -> Dict:
     return cls.__dict__["__annotations__"].copy() if cls_is_annotated(cls) else {}
 
 
-def is_proxy_dict(config: Any) -> bool:
-    return isinstance(config, dict) and all(
-        [
-            isinstance(k, str) and (isinstance(v, dict) or isinstance(v, list))
-            for k, v in config.items()
-        ]
-    )
+def is_generic_list(obj: Any) -> bool:
+    return hasattr(obj, "__origin__") and obj.__origin__ == list
+
+
+def is_generic_dict(obj: Any) -> bool:
+    return hasattr(obj, "__origin__") and obj.__origin__ == "Dict"
+
+
+def inner_type(generic_field_type: Any) -> bool:
+    return generic_field_type.__args__[0]

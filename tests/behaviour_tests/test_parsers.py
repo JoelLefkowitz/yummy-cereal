@@ -8,7 +8,7 @@ path_guard("../..")
 from pytest_bdd import given, scenario, then, when
 
 from fixtures.menu_classes import Course, Dish, Menu
-from yummy_cereal import AnotatedFieldsParser, list_or_single_parser, named_parser
+from yummy_cereal import AnotatedFieldsParser
 
 
 @pytest.fixture(scope="module")
@@ -30,25 +30,23 @@ def annotated_menu_classes():
 @when("I create menu parsers")
 def create_menu_parser(context):
     """I create menu parsers."""
-    dish_parser = AnotatedFieldsParser(
-        cls=Dish, collector_field="details", child_parsers={"details": dict}
-    )
-
-    named_dish_list_parser = named_parser(list_or_single_parser(dish_parser))
+    dish_parser = AnotatedFieldsParser(cls=Dish, collector_field="details")
 
     course_parser = AnotatedFieldsParser(
         cls=Course,
         collector_field="dishes",
-        child_parsers={"dishes": named_dish_list_parser},
+        collect_with_names=True,
+        typed_parsers={Dish: dish_parser},
     )
 
-    named_course_list_parser = named_parser(list_or_single_parser(course_parser))
-
-    context["menu_parser"] = AnotatedFieldsParser(
+    menu_parser = AnotatedFieldsParser(
         cls=Menu,
         collector_field="courses",
-        child_parsers={"courses": named_course_list_parser},
+        collect_with_names=True,
+        typed_parsers={Course: course_parser},
     )
+
+    context["menu_parser"] = menu_parser
 
 
 @when("I parse the menu")
@@ -62,9 +60,16 @@ def parse_menu(context, full_menu):
 def valid_menu_objs(context):
     """I recieve menu objects."""
     menu = context["menu"]
-    assert ["Appetizers", "Mains", "Desserts", "Drinks", "Wines"] == [
-        i.name for i in menu.courses
+    assert menu.language == "English"
+
+    course_names = [course.name for course in menu.courses]
+    assert course_names == [
+        "Appetizers",
+        "Mains",
+        "Desserts",
+        "Drinks",
+        "Wines",
     ]
 
-    main_course = next(course for course in menu.courses if course.name == "Mains")
-    assert ["Pasta", "Pizza"] == [i.name for i in main_course.dishes]
+    mains = menu.courses[course_names.index("Mains")]
+    assert [dish.name for dish in mains.dishes] == ["Pasta", "Pizza"]
