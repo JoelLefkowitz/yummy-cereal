@@ -1,13 +1,6 @@
-# coding=utf-8
-"""Parser feature tests."""
 import pytest
-from pyimport import path_guard
-
-path_guard("../..")
-
 from pytest_bdd import given, scenario, then, when
-
-from fixtures.menu_classes import Course, Dish, Menu
+from fixtures.menus.models import Course, Dish, Menu
 from yummy_cereal import AnotatedFieldsParser
 
 
@@ -16,7 +9,7 @@ def context():
     return {}
 
 
-@scenario("parsers.feature", "Parsing a menu")
+@scenario("annotations_parser.feature", "Parsing a menu")
 def test_parsing_a_menu():
     """Parsing a menu."""
 
@@ -27,9 +20,9 @@ def annotated_menu_classes():
     pass
 
 
-@when("I create menu parsers")
+@when("I create a menu parser")
 def create_menu_parser(context):
-    """I create menu parsers."""
+    """I create a menu parser."""
     dish_parser = AnotatedFieldsParser(cls=Dish, collector_field="details")
 
     course_parser = AnotatedFieldsParser(
@@ -49,9 +42,9 @@ def create_menu_parser(context):
     context["menu_parser"] = menu_parser
 
 
-@when("I parse the menu")
+@when("I parse a menu")
 def parse_menu(context, full_menu):
-    """I parse the menu."""
+    """I parse a menu."""
     menu_parser = context["menu_parser"]
     context["menu"] = menu_parser(full_menu)
 

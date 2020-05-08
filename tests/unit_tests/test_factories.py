@@ -1,17 +1,10 @@
-from typing import Dict
-
 import pytest
-from pyimport import path_guard
+from typing import Dict
+from yummy_cereal import InvalidConfig, ValidatedParser
 
-path_guard("../..")
 
-from fixtures.menu_classes import Menu, Course, Dish
-from yummy_cereal import (
-    InvalidConfig,
-    ValidatedParser,
-)
-
-# AnotatedFieldsParser tested in behaviour_tests
+def test_AnotatedFieldsParser():
+    pass
 
 
 def test_ValidatedParser() -> None:
