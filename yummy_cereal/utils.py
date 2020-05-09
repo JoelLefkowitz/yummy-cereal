@@ -1,4 +1,4 @@
-from typing import Any, Dict, Tuple
+from typing import Any, Dict
 
 
 def cls_is_annotated(cls: Any) -> bool:

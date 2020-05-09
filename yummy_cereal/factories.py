@@ -1,7 +1,8 @@
 from dataclasses import dataclass, field
 from typing import Any, Dict, Generic, List, Optional, Protocol, Tuple, TypeVar, Union
-from .exceptions import ConfigTypeError, InvalidConfig, AnnotationTypeError
-from .utils import cls_annotations, is_generic_list, is_generic_dict, inner_type
+
+from .exceptions import AnnotationTypeError, ConfigTypeError, InvalidConfig
+from .utils import cls_annotations, inner_type, is_generic_dict, is_generic_list
 
 T = TypeVar("T")
 

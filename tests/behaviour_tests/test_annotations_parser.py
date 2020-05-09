@@ -1,5 +1,6 @@
 import pytest
 from pytest_bdd import given, scenario, then, when
+
 from fixtures.menus.models import Course, Dish, Menu
 from yummy_cereal import AnotatedFieldsParser
 
@@ -17,7 +18,6 @@ def test_parsing_a_menu():
 @given("I have annotated menu classes")
 def annotated_menu_classes():
     """I have annotated menu classes."""
-    pass
 
 
 @when("I create a menu parser")

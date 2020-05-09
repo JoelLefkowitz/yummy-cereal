@@ -5,8 +5,8 @@ from distutils.core import Command
 class ComprehensiveTest(Command):
     description = "Generate a comprehensive test report"
     user_options = [
-        ('output=', 'o',
-         "Name of report output path [default: test_report.html]")]
+        ("output=", "o", "Name of report output path [default: test_report.html]")
+    ]
 
     def initialize_options(self) -> None:
         self.output = None
@@ -16,7 +16,16 @@ class ComprehensiveTest(Command):
             self.output = "test_report.html"
 
     def run(self) -> None:
-        subprocess.run(["pytest", "--cov", "yummy_cereal", "--html", self.output, "--self-contained-html"])
+        subprocess.run(
+            [
+                "pytest",
+                "--cov",
+                "yummy_cereal",
+                "--html",
+                self.output,
+                "--self-contained-html",
+            ]
+        )
 
 
 class UpdateDocs(Command):

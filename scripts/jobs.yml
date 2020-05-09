@@ -1,0 +1,16 @@
+jobs:
+  lint:
+    commands:
+      - flake8
+      - pydocstyle
+      - mypy .
+
+  format:
+    commands:
+      - black .
+      - isort --apply
+      - autoflake . -ri --exclude "venv, conftest.py" --remove-all-unused-imports --remove-unused-variables
+
+meta:
+  script_root: ../
+  project_root: ../../

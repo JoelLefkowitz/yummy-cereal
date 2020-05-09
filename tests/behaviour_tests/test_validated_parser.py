@@ -1,5 +1,6 @@
 import pytest
 from pytest_bdd import given, scenario, then, when
+
 from fixtures.menus.models import Course, Dish, Menu
 from yummy_cereal import AnotatedFieldsParser, ValidatedParser
 
@@ -55,4 +56,4 @@ def validate_objs(context):
     """Validation checks are run."""
 
     # TODO Add validation checks
-    menu = context["menu"]
+    context["menu"]

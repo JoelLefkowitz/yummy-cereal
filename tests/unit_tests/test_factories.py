@@ -1,5 +1,5 @@
 import pytest
-from typing import Dict
+
 from yummy_cereal import InvalidConfig, ValidatedParser
 
 
