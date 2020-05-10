@@ -7,7 +7,7 @@ if __name__ == "__main__":
         install_requires = ["dataclasses", "pyimport"],
         extras_require = {
             "dist": ["wheel"],
-            "docs": ["sphinx", "sphinxcontrib.apidoc", "yummy-sphinx-theme"],
+            "docs": ["sphinx", "sphinxcontrib.apidoc", "yummy_sphinx_theme"],
             "tests": [
                 "pytest",
                 "pytest-cov",
