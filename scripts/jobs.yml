@@ -17,6 +17,14 @@ jobs:
       release_type: patch
       twine_username: joellefkowitz
 
+routines:
+  release:
+    - comprehensiveTest
+    - clean
+    - format
+    - updateDocs
+    - pypi-upload
+
 meta:
   script_root: ../
   project_root: ../../
