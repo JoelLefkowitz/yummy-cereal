@@ -34,8 +34,10 @@ class ValidatedParser(Generic[T]):
 
     def validate(self, config: Dict) -> None:
         for validator in self.validators:
-            result = validator(config)
-            valid, msg = result if isinstance(result, tuple) else result, None
+            if isinstance(result := validator(config), Tuple):
+                valid, msg = result
+            else:
+                valid, msg = result, None
 
             if not valid:
                 raise InvalidConfig(msg, config)

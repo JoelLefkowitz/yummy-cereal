@@ -1,1 +1,1 @@
-from .fixtures.menus.data import full_menu
+from .fixtures.menus.data import full_menu, invalid_menu

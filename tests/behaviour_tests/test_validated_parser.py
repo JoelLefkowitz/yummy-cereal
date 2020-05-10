@@ -2,7 +2,7 @@ import pytest
 from pytest_bdd import given, scenario, then, when
 
 from fixtures.menus.models import Course, Dish, Menu
-from yummy_cereal import AnotatedFieldsParser, ValidatedParser
+from yummy_cereal import AnotatedFieldsParser, ValidatedParser, InvalidConfig
 
 
 @pytest.fixture(scope="module")
@@ -40,20 +40,25 @@ def menu_parser(context):
 @given("I create a validated parser")
 def validated_parser(context):
     """I create a validated parser."""
-    validated_parser = ValidatedParser(context["menu_parser"])
+    validators = [lambda x: ("courses" in x and "Mains" in x["courses"], "Mains not in menu")]
+    validated_parser = ValidatedParser(context["menu_parser"], validators)
     context["validated_parser"] = validated_parser
 
 
 @when("I parse and validate a menu")
-def validate_menu(context, full_menu):
+def validate_menu(context, full_menu, invalid_menu):
     """I parse and validate a menu."""
     menu_parser = context["validated_parser"]
-    context["menu"] = menu_parser(full_menu)
+
+    # Validation checks are run when parsing
+    menu_parser(full_menu)
+
+    with pytest.raises(InvalidConfig):
+        menu_parser(invalid_menu)
 
 
+# Validation checks run during menu parsing
 @then("Validation checks are run")
 def validate_objs(context):
     """Validation checks are run."""
-
-    # TODO Add validation checks
-    context["menu"]
+    pass
