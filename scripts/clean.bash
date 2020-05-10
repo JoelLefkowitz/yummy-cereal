@@ -1,10 +1,16 @@
 #!/bin/bash
 for directory in build dist templ8.egg-info; do
-  target=$(pwd)/$element
-  if [ -d "$target" ]; then
-    echo Removing $target
-    rm -rf $target
+  target=$(pwd)/$directory
+  read -p "Would you like to delete $target? `echo $'\n> '`"
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+    echo "Trying to delete $target"
+    if [ -d "$target" ]; then
+      rm -rf $target
+      echo "Deleted $target"
+    else
+      echo "Cannot find $target"
+    fi
   else
-    echo $target not found
+    echo "Skipping $target"
   fi
 done

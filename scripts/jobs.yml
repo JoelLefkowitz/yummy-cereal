@@ -11,6 +11,12 @@ jobs:
       - isort --apply
       - autoflake . -ri --exclude "venv, conftest.py" --remove-all-unused-imports --remove-unused-variables
 
+  pypi-upload:
+    function: pypi_upload
+    context:
+      release_type: patch
+      twine_username: joellefkowitz
+
 meta:
   script_root: ../
   project_root: ../../
