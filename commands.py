@@ -13,7 +13,7 @@ class ComprehensiveTest(Command):
 
     def finalize_options(self) -> None:
         if self.output is None:
-            self.output = "test_report.html"
+            self.output = ".test_report.html"
 
     def run(self) -> None:
         subprocess.run(

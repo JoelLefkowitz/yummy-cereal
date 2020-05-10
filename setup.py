@@ -4,9 +4,10 @@ from setuptools import setup
 
 if __name__ == "__main__":
     setup(
-        install_requires=["dataclasses"],
-        extras_require={
-            "docs": ["sphinx-apidoc", "sphinx-build"],
+        install_requires = ["dataclasses", "pyimport"],
+        extras_require = {
+            "dist": ["wheel"],
+            "docs": ["sphinx", "sphinxcontrib.apidoc", "yummy-sphinx-theme"],
             "tests": [
                 "pytest",
                 "pytest-cov",
