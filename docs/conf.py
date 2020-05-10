@@ -1,6 +1,6 @@
 import os
 
-project = "yummy-cereal"
+project = "Yummy Cereal"
 author = "Joel Lefkowitz"
 copyright = author
 
