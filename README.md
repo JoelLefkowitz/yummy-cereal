@@ -27,7 +27,7 @@ Alternatively, you can clone the repo and build the package locally.
 
 ### Docs
 
-Examples and additional details are available in the [full documentation][readthedocs].
+Examples and additional details are available in the [full documentation](https://yummy-cereal.readthedocs.io/en/latest/).
 
 To generate the documentation locally:
 
@@ -67,7 +67,7 @@ Releases are made on every major change.
 
 ## Author
 
-- **Joel Lefkowitz** - _Initial work_ - [Joel Lefkowitz](JoelLefkowitz)
+- **Joel Lefkowitz** - _Initial work_ - [Joel Lefkowitz](https://github.com/JoelLefkowitz)
 
 See also the list of contributors who participated in this project.
 
@@ -79,11 +79,10 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 None yet!
 
-<!--- Links --->
+<!--- Table links --->
 
 [license]: https://img.shields.io/github/license/joellefkowitz/yummy-cereal
 [release]: https://img.shields.io/github/v/tag/joellefkowitz/yummy-cereal
-[readthedocs]: https://readthedocs.org/projects/yummy-cereal
 [pypi_downloads]: https://img.shields.io/pypi/dw/yummy-cereal
 
 [pypi]: https://img.shields.io/pypi/v/yummy-cereal "PyPi"

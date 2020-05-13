@@ -1,4 +1,3 @@
-from commands import RunTests, BuildDocs
 from setuptools import setup
 
 if __name__ == "__main__":
@@ -21,7 +20,5 @@ if __name__ == "__main__":
                 "pytest-sugar",
                 "pytest-bdd",
             ],
-        },
-        entry_points={"console_scripts": []},
-        cmdclass={"tests": RunTests, "docs": BuildDocs,},
+        }
     )
