@@ -4,10 +4,14 @@ import datetime
 project = "Yummy Cereal"
 author = "Joel Lefkowitz"
 copyright = f"{datetime.datetime.now().year}, {author}"
-extensions = ["sphinx.ext.napoleon"]
+extensions = ["sphinx.ext.napoleon", 'recommonmark']
 
 master_doc = 'index'
-source_suffix = ['.rst', '.md']
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.txt': 'restructuredtext',
+    '.md': 'markdown',
+}
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "venv"]
 
 html_theme = "yummy_sphinx_theme"
