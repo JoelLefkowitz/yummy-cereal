@@ -39,4 +39,4 @@ class BuildDocs(Command):
         pass
 
     def run(self) -> None:
-        subprocess.run(["sphinx-build", "docs/", "build/"])
+        subprocess.run(["sphinx-build", "-E", "docs/", "build/"])

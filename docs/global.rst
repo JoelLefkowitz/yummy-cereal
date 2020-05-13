@@ -1,1 +1,0 @@
-.. |br| replace:: SoftTech Analyzer

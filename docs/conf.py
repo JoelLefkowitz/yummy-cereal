@@ -3,29 +3,24 @@ import re
 import datetime
 import shutil
 import pypandoc
-from sphinxcontrib.pandoc_markdown import MarkdownParser
+from pyimport import path_guard
+
+path_guard("../..")
 
 
 project = "Yummy Cereal"
 version = "0.2.5"
+master_doc = "index"
 author = "Joel Lefkowitz"
 copyright = f"{datetime.datetime.now().year}, {author}"
-
-master_doc = "index"
-source_suffix = [".rst", ".md"]
-source_parsers = {".md": MarkdownParser}
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "venv"]
 
 extensions = [
-    "recommonmark",
-    "sphinx_markdown_tables",
     "sphinx.ext.autodoc",
-    "sphinx.ext.autosectionlabel",
-    "sphinx.ext.intersphinx",
-    "sphinx.ext.todo",
+    "sphinx_autodoc_annotation",
+    "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
     "sphinxcontrib.apidoc",
-    "sphinxcontrib.napoleon"
 ]
 
 
@@ -60,10 +55,20 @@ html_theme_options = {
     "navbar_icon": "spin fa-book",
 }
 html_css_files = [os.path.join(static_dir, "styles.css")]
-
-# Apidoc settings
-apidoc_module_dir = relpath("../../yummy_cereal")
+html_add_permalinks = ""
 
 # Convert README to html directly
 convert_md(relpath("../../README.md"), static_dir)
 remove_heading(os.path.join(static_dir, "README.html"))
+
+# Autodoc settings
+autodoc_typehints = "description"
+typehints_fully_qualified = True
+autodoc_default_flags = ["members", "undoc-members"]
+
+# Napoleon settings
+napoleon_google_docstring = True
+
+# Apidoc settings
+apidoc_module_dir = relpath("../../yummy_cereal")
+apidoc_extra_args = ["-e"]

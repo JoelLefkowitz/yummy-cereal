@@ -9,12 +9,9 @@ if __name__ == "__main__":
             "docs": [
                 "sphinx",
                 "pypandoc",
-                "recommonmark",
-                "sphinx_markdown_tables",
                 "sphinxcontrib.apidoc",
-                "sphinxcontrib-napoleon",
                 "sphinxcontrib.pandoc_markdown",
-                "yummy_sphinx_theme"
+                "sphinx-autodoc-annotation" "yummy_sphinx_theme",
             ],
             "tests": [
                 "pytest",
