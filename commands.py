@@ -40,7 +40,7 @@ class UpdateDocs(Command):
 
     def run(self) -> None:
         subprocess.run(["sphinx-apidoc", "-o", "docs/", "yummy_cereal/", "tests/"])
-
+3
 
 class GenerateDocs(Command):
     description = "Generate docs using sphinx-autodoc"

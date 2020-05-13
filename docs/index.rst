@@ -2,6 +2,6 @@ Welcome to Yummy Cereal's documentation!
 ====================================
 
 .. toctree::
-    :maxdepth: 2
-    
+    :maxdepth: 1
+
     yummy_cereal
