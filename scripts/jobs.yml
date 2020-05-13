@@ -9,7 +9,10 @@ jobs:
     commands:
       - black .
       - isort --apply
-      - autoflake . -ri --exclude "venv, conftest.py" --remove-all-unused-imports --remove-unused-variables
+      - >-
+        autoflake . -ri --exclude "venv, conftest.py"
+        --remove-all-unused-imports --remove-unused-variables
+        --ignore-init-module-imports
 
   docs:
     command: sphinx-build docs/ build/

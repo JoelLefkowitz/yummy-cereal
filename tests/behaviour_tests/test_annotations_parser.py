@@ -1,7 +1,6 @@
 import pytest
-from pytest_bdd import given, scenario, then, when
-
 from fixtures.menus.models import Course, Dish, Menu
+from pytest_bdd import given, scenario, then, when
 from yummy_cereal import AnotatedFieldsParser
 
 

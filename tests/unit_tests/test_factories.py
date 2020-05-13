@@ -1,5 +1,4 @@
 import pytest
-
 from yummy_cereal import InvalidConfig, ValidatedParser
 
 

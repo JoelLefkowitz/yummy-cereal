@@ -1,7 +1,7 @@
+import datetime
 import os
 import re
-import datetime
-import shutil
+
 import pypandoc
 from pyimport import path_guard
 

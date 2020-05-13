@@ -1,8 +1,7 @@
 import pytest
-from pytest_bdd import given, scenario, then, when
-
 from fixtures.menus.models import Course, Dish, Menu
-from yummy_cereal import AnotatedFieldsParser, ValidatedParser, InvalidConfig
+from pytest_bdd import given, scenario, then, when
+from yummy_cereal import AnotatedFieldsParser, InvalidConfig, ValidatedParser
 
 
 @pytest.fixture(scope="module")
@@ -63,4 +62,3 @@ def validate_menu(context, full_menu, invalid_menu):
 @then("Validation checks are run")
 def validate_objs(context):
     """Validation checks are run."""
-    pass
