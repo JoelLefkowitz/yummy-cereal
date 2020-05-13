@@ -8,6 +8,7 @@ if __name__ == "__main__":
             "dist": ["wheel"],
             "docs": [
                 "sphinx",
+                "pypandoc",
                 "recommonmark",
                 "sphinx_markdown_tables",
                 "sphinxcontrib.apidoc",
