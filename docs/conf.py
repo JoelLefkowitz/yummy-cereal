@@ -10,11 +10,9 @@ master_doc = 'index'
 source_suffix = ['.rst', '.md']
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "venv"]
 
-github_url = "github.com/JoelLefkowitz/yummy-cereal"
 html_theme = "yummy_sphinx_theme"
 html_theme_options = {
-    'github_url': github_url,
-    'canonical_url': github_url,
+    'github_url': "JoelLefkowitz/yummy-cereal",
     'navbar_icon': 'spin fa-book'
 }
 
