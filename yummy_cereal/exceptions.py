@@ -21,6 +21,7 @@ class AnnotationTypeError(Exception):
     Arguments:
         Exception
     """
+
     def __init__(self, annotation_type: Any, config: Any) -> None:
         msg = f"Annotated field type failed to parse config\nType: {annotation_type}\nConfig: {config}"
         super().__init__(msg)

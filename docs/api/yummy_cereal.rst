@@ -1,11 +1,6 @@
 yummy\_cereal package
 =====================
 
-.. automodule:: yummy_cereal
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 Submodules
 ----------
 
@@ -33,3 +28,11 @@ yummy\_cereal.utils module
    :undoc-members:
    :show-inheritance:
 
+
+Module contents
+---------------
+
+.. automodule:: yummy_cereal
+   :members:
+   :undoc-members:
+   :show-inheritance:

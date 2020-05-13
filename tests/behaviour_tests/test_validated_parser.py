@@ -40,7 +40,9 @@ def menu_parser(context):
 @given("I create a validated parser")
 def validated_parser(context):
     """I create a validated parser."""
-    validators = [lambda x: ("courses" in x and "Mains" in x["courses"], "Mains not in menu")]
+    validators = [
+        lambda x: ("courses" in x and "Mains" in x["courses"], "Mains not in menu")
+    ]
     validated_parser = ValidatedParser(context["menu_parser"], validators)
     context["validated_parser"] = validated_parser
 

@@ -2,7 +2,7 @@ import subprocess
 from distutils.core import Command
 
 
-class ComprehensiveTest(Command):
+class RunTests(Command):
     description = "Generate a comprehensive test report"
     user_options = [
         ("output=", "o", "Name of report output path [default: test_report.html]")
@@ -28,22 +28,8 @@ class ComprehensiveTest(Command):
         )
 
 
-class UpdateDocs(Command):
-    description = "Update build configuration using sphinx-apidoc"
-    user_options = []
-
-    def initialize_options(self) -> None:
-        pass
-
-    def finalize_options(self) -> None:
-        pass
-
-    def run(self) -> None:
-        subprocess.run(["sphinx-apidoc", "-o", "docs/", "yummy_cereal/", "tests/"])
-3
-
-class GenerateDocs(Command):
-    description = "Generate docs using sphinx-autodoc"
+class BuildDocs(Command):
+    description = "Sphinx build"
     user_options = []
 
     def initialize_options(self) -> None:
