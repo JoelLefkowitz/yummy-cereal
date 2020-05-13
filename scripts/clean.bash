@@ -1,4 +1,6 @@
 #!/bin/bash
+# Remove directory contents
+
 for directory in build dist templ8.egg-info; do
   target=$(pwd)/$directory
   read -p "Would you like to delete $target? `echo $'\n> '`"

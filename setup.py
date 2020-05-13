@@ -5,7 +5,7 @@ if __name__ == "__main__":
     setup(
         install_requires=["dataclasses", "pyimport"],
         extras_require={
-            "dist": ["wheel"],
+            "dist": ["wheel", "twine", "bump2version"],
             "docs": [
                 "sphinx",
                 "pypandoc",
