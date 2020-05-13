@@ -11,7 +11,8 @@ if __name__ == "__main__":
                 "pypandoc",
                 "sphinxcontrib.apidoc",
                 "sphinxcontrib.pandoc_markdown",
-                "sphinx-autodoc-annotation" "yummy_sphinx_theme",
+                "sphinx-autodoc-annotation",
+                "yummy_sphinx_theme",
             ],
             "tests": [
                 "pytest",
