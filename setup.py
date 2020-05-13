@@ -13,6 +13,7 @@ if __name__ == "__main__":
                 "sphinx_markdown_tables",
                 "sphinxcontrib.apidoc",
                 "sphinxcontrib.pandoc_markdown",
+                "yummy_sphinx_theme"
             ],
             "tests": [
                 "pytest",
