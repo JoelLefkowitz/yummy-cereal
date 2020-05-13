@@ -15,7 +15,7 @@ jobs:
     command: sphinx-build docs/ build/
 
   tests:
-    command: pytest --cov yummy_cereal --html self.output --self-contained-html
+    command: pytest --cov yummy_cereal --html .test_report.html --self-contained-html
 
   release:
     commands:

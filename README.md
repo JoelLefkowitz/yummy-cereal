@@ -27,7 +27,7 @@ Alternatively, you can clone the repo and build the package locally.
 
 ### Docs
 
-Examples and additional details are available in the [full documentation](readthedocs).
+Examples and additional details are available in the [full documentation][readthedocs].
 
 To generate the documentation locally:
 
