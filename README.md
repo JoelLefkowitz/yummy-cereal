@@ -1,9 +1,8 @@
 # Yummy Cereal
 
-Import utilities
+Object parser
 
 ## Status
-
 
 | Source     | Shields                                                        |
 | ---------- | -------------------------------------------------------------- |
@@ -11,6 +10,15 @@ Import utilities
 | Publishers | [![pypi][pypi]][pypi_link]                                     |
 | Downloads  | ![pypi_downloads][pypi_downloads]                              |
 | Raised     | [![issues][issues]][issues_link] [![pulls][pulls]][pulls_link] |
+
+### Installing
+
+Install the package from pypi:
+
+```bash
+pip install yummy_cereal
+```
+
 
 [license]: https://img.shields.io/github/license/joellefkowitz/yummy-cereal
 [release]: https://img.shields.io/github/v/tag/joellefkowitz/yummy-cereal
@@ -22,11 +30,3 @@ Import utilities
 [issues_link]: https://github.com/JoelLefkowitz/yummy-cereal/issues
 [pulls]: https://img.shields.io/github/issues-pr/joellefkowitz/yummy-cereal "Pull requests"
 [pulls_link]: https://github.com/JoelLefkowitz/yummy-cereal/pulls
-
-### Installing
-
-Install the package from pypi:
-
-```bash
-pip install yummy_cereal
-```

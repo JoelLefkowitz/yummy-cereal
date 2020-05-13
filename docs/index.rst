@@ -3,8 +3,24 @@ Yummy Cereal
 
 Welcome to Yummy Cereal's documentation!
 
-.. toctree::
-    :maxdepth: 1
-
 .. raw:: html
    :file: static/README.html
+
+|
+
+Content
+-------
+
+.. toctree::
+   :maxdepth: 1
+
+   api/modules
+
+|
+
+Indices and tables
+------------------
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+

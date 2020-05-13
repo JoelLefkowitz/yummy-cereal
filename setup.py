@@ -12,6 +12,7 @@ if __name__ == "__main__":
                 "recommonmark",
                 "sphinx_markdown_tables",
                 "sphinxcontrib.apidoc",
+                "sphinxcontrib-napoleon",
                 "sphinxcontrib.pandoc_markdown",
                 "yummy_sphinx_theme"
             ],
