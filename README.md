@@ -2,7 +2,7 @@
 
 Object parser factories to simplify object configurations
 
-## Status
+### Status
 
 | Source     | Shields                                                        |
 | ---------- | -------------------------------------------------------------- |
@@ -21,9 +21,96 @@ pip install yummy_cereal
 
 Alternatively, you can clone the repo and build the package locally.
 
-### Usage
+### Motivation
 
-:purple_heart: Under costruction - This is a pre-release:purple_heart:
+Parsing objects from a configuration can become overly complicated,  particularly if the objects are listed by name. Rather than making the configuration overly verbose or creating specific parsers every time, suitable parser factories are necessary.
+
+### Example usage
+Consider the following menu configuration:
+
+```yaml
+language: English
+courses:
+    Appetizers:
+        - Fruit
+        - Muesli
+    Mains:
+        Pasta:
+            shapes:
+                - Penne
+                - Bow-tie
+        Pizza:
+            toppings:
+                - Margarita
+                - Farmhouse
+    Desserts:
+        - Cake
+        - Custard
+    Drinks:
+        - Tea
+        - Coffee
+    Wines:
+        - Red
+        - Rose
+```
+
+We can make simple annotated classes:
+
+```python
+from dataclasses import dataclass
+from typing import Any, List
+
+
+@dataclass
+class Dish:
+    name: str
+    details: Any = None
+
+
+@dataclass
+class Course:
+    name: str
+    dishes: List[Dish]
+
+
+@dataclass
+class Menu:
+    language: str
+    courses: List[Course]
+```
+
+And then create parsers:
+
+```python
+from yummy_cereal import AnotatedFieldsParser
+
+dish_parser = AnotatedFieldsParser(cls=Dish, collector_field="details")
+
+course_parser = AnotatedFieldsParser(
+    cls=Course,
+    collector_field="dishes",
+    collect_with_names=True,
+    typed_parsers={Dish: dish_parser},
+)
+
+menu_parser = AnotatedFieldsParser(
+    cls=Menu,
+    collector_field="courses",
+    collect_with_names=True,
+    typed_parsers={Course: course_parser},
+)
+```
+
+Finally, we can parse the objects:
+
+```python
+from ruamel.yaml import load, Loader
+
+with open(config, "r") as stream:
+    menu_config = load(stream, Loader=Loader)
+
+menu = menu_parser(menu_config)
+```
 
 ### Docs
 
@@ -48,11 +135,11 @@ multi-job tests
 Additionally, an html report will be saved to the local directory.
 
 
-## Contributing
+### Contributing
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests.
 
-## Versioning
+### Versioning
 
 [SemVer](http://semver.org/) is used for versioning. For a list of versions available, see the tags on this repository.
 
@@ -65,17 +152,17 @@ bump2version patch
 
 Releases are made on every major change.
 
-## Author
+### Author
 
 - **Joel Lefkowitz** - _Initial work_ - [Joel Lefkowitz](https://github.com/JoelLefkowitz)
 
 See also the list of contributors who participated in this project.
 
-## License
+### License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
-## Acknowledgments
+### Acknowledgments
 
 None yet!
 
