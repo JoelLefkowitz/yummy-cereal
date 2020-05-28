@@ -16,5 +16,8 @@ class Course:
 
 @dataclass
 class Menu:
+    name: str
     language: str
     courses: List[Course]
+    specials: List[Dish]
+    drinks: List[Dish]

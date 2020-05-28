@@ -1,0 +1,40 @@
+---
+name: Big munch grill
+language: English
+
+courses:
+  Appetizers:
+    - Pico de Gallo
+    - Pineapple Salsa
+    - Oven Baked Soft Pretzels
+    - Taco Ring
+    - Pizza bites
+
+  Main course:
+    Pasta:
+      sauce:
+        - rose
+        - alfredo
+        - cream
+      shapes:
+        - penne
+        - bow-tie
+        - ravioli
+    Pizza:
+      toppings:
+        - beef
+        - bazil
+        - tomato
+        - peppers
+
+  Desserts:
+    - Gooey Brownies
+    - Butterfinger Cookie Dough
+
+drinks:
+  - Fruit juice
+  - Green tea
+  - Coffee
+
+specials:
+  - Banana split

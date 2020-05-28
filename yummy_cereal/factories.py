@@ -53,7 +53,7 @@ class AnotatedFieldsParser:
 
     def __call__(self, config: Dict) -> T:
         if not isinstance(config, dict):
-            raise ConfigTypeError(config, dict)
+            raise ConfigTypeError(config)
 
         parsed_fields = {
             field_name: self.parse_field(field_name, field_value)

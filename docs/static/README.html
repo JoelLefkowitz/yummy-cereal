@@ -1,0 +1,132 @@
+<link rel="stylesheet" href="github-markdown.css">
+<p>Object parser factories to simplify object configurations</p>
+<h3 id="status">Status</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Source</th>
+<th>Shields</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Project</td>
+<td><img src="https://img.shields.io/github/license/joellefkowitz/yummy-cereal" alt="license" /> <img src="https://img.shields.io/github/v/tag/joellefkowitz/yummy-cereal" alt="release" /></td>
+</tr>
+<tr class="even">
+<td>Publishers</td>
+<td><a href="https://pypi.org/project/yummy-cereal"><img src="https://img.shields.io/pypi/v/yummy-cereal" title="PyPi" alt="pypi" /></a></td>
+</tr>
+<tr class="odd">
+<td>Downloads</td>
+<td><img src="https://img.shields.io/pypi/dw/yummy-cereal" alt="pypi_downloads" /></td>
+</tr>
+<tr class="even">
+<td>Raised</td>
+<td><a href="https://github.com/JoelLefkowitz/yummy-cereal/issues"><img src="https://img.shields.io/github/issues/joellefkowitz/yummy-cereal" title="Issues" alt="issues" /></a> <a href="https://github.com/JoelLefkowitz/yummy-cereal/pulls"><img src="https://img.shields.io/github/issues-pr/joellefkowitz/yummy-cereal" title="Pull requests" alt="pulls" /></a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="installing">Installing</h3>
+<p>To install the package from pypi:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="ex">pip</span> install yummy_cereal</span></code></pre></div>
+<p>Alternatively, you can clone the repo and build the package locally.</p>
+<h3 id="motivation">Motivation</h3>
+<p>Parsing objects from a configuration can become overly complicated, particularly if the objects are listed by name. Rather than making the configuration overly verbose or creating specific parsers every time, suitable parser factories are necessary.</p>
+<h3 id="example-usage">Example usage</h3>
+<p>Consider the following menu configuration:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">language</span><span class="kw">:</span><span class="at"> English</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">courses</span><span class="kw">:</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="at">    </span><span class="fu">Appetizers</span><span class="kw">:</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="at">        </span><span class="kw">-</span><span class="at"> Fruit</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="at">        </span><span class="kw">-</span><span class="at"> Muesli</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="at">    </span><span class="fu">Mains</span><span class="kw">:</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="at">        </span><span class="fu">Pasta</span><span class="kw">:</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="at">            </span><span class="fu">shapes</span><span class="kw">:</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="at">                </span><span class="kw">-</span><span class="at"> Penne</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="at">                </span><span class="kw">-</span><span class="at"> Bow-tie</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="at">        </span><span class="fu">Pizza</span><span class="kw">:</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a><span class="at">            </span><span class="fu">toppings</span><span class="kw">:</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a><span class="at">                </span><span class="kw">-</span><span class="at"> Margarita</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a><span class="at">                </span><span class="kw">-</span><span class="at"> Farmhouse</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a><span class="at">    </span><span class="fu">Desserts</span><span class="kw">:</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a><span class="at">        </span><span class="kw">-</span><span class="at"> Cake</span></span>
+<span id="cb2-17"><a href="#cb2-17"></a><span class="at">        </span><span class="kw">-</span><span class="at"> Custard</span></span>
+<span id="cb2-18"><a href="#cb2-18"></a><span class="at">    </span><span class="fu">Drinks</span><span class="kw">:</span></span>
+<span id="cb2-19"><a href="#cb2-19"></a><span class="at">        </span><span class="kw">-</span><span class="at"> Tea</span></span>
+<span id="cb2-20"><a href="#cb2-20"></a><span class="at">        </span><span class="kw">-</span><span class="at"> Coffee</span></span>
+<span id="cb2-21"><a href="#cb2-21"></a><span class="at">    </span><span class="fu">Wines</span><span class="kw">:</span></span>
+<span id="cb2-22"><a href="#cb2-22"></a><span class="at">        </span><span class="kw">-</span><span class="at"> Red</span></span>
+<span id="cb2-23"><a href="#cb2-23"></a><span class="at">        </span><span class="kw">-</span><span class="at"> Rose</span></span></code></pre></div>
+<p>We can make simple annotated classes:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="im">from</span> dataclasses <span class="im">import</span> dataclass</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="im">from</span> typing <span class="im">import</span> Any, List</span>
+<span id="cb3-3"><a href="#cb3-3"></a></span>
+<span id="cb3-4"><a href="#cb3-4"></a></span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="at">@dataclass</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="kw">class</span> Dish:</span>
+<span id="cb3-7"><a href="#cb3-7"></a>    name: <span class="bu">str</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a>    details: Any <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a></span>
+<span id="cb3-10"><a href="#cb3-10"></a></span>
+<span id="cb3-11"><a href="#cb3-11"></a><span class="at">@dataclass</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a><span class="kw">class</span> Course:</span>
+<span id="cb3-13"><a href="#cb3-13"></a>    name: <span class="bu">str</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a>    dishes: List[Dish]</span>
+<span id="cb3-15"><a href="#cb3-15"></a></span>
+<span id="cb3-16"><a href="#cb3-16"></a></span>
+<span id="cb3-17"><a href="#cb3-17"></a><span class="at">@dataclass</span></span>
+<span id="cb3-18"><a href="#cb3-18"></a><span class="kw">class</span> Menu:</span>
+<span id="cb3-19"><a href="#cb3-19"></a>    language: <span class="bu">str</span></span>
+<span id="cb3-20"><a href="#cb3-20"></a>    courses: List[Course]</span></code></pre></div>
+<p>And then create parsers:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a><span class="im">from</span> yummy_cereal <span class="im">import</span> AnotatedFieldsParser</span>
+<span id="cb4-2"><a href="#cb4-2"></a></span>
+<span id="cb4-3"><a href="#cb4-3"></a>dish_parser <span class="op">=</span> AnotatedFieldsParser(cls<span class="op">=</span>Dish, collector_field<span class="op">=</span><span class="st">&quot;details&quot;</span>)</span>
+<span id="cb4-4"><a href="#cb4-4"></a></span>
+<span id="cb4-5"><a href="#cb4-5"></a>course_parser <span class="op">=</span> AnotatedFieldsParser(</span>
+<span id="cb4-6"><a href="#cb4-6"></a>    cls<span class="op">=</span>Course,</span>
+<span id="cb4-7"><a href="#cb4-7"></a>    collector_field<span class="op">=</span><span class="st">&quot;dishes&quot;</span>,</span>
+<span id="cb4-8"><a href="#cb4-8"></a>    collect_with_names<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb4-9"><a href="#cb4-9"></a>    typed_parsers<span class="op">=</span>{Dish: dish_parser},</span>
+<span id="cb4-10"><a href="#cb4-10"></a>)</span>
+<span id="cb4-11"><a href="#cb4-11"></a></span>
+<span id="cb4-12"><a href="#cb4-12"></a>menu_parser <span class="op">=</span> AnotatedFieldsParser(</span>
+<span id="cb4-13"><a href="#cb4-13"></a>    cls<span class="op">=</span>Menu,</span>
+<span id="cb4-14"><a href="#cb4-14"></a>    collector_field<span class="op">=</span><span class="st">&quot;courses&quot;</span>,</span>
+<span id="cb4-15"><a href="#cb4-15"></a>    collect_with_names<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb4-16"><a href="#cb4-16"></a>    typed_parsers<span class="op">=</span>{Course: course_parser},</span>
+<span id="cb4-17"><a href="#cb4-17"></a>)</span></code></pre></div>
+<p>Finally, we can parse the objects:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a><span class="im">from</span> ruamel.yaml <span class="im">import</span> load, Loader</span>
+<span id="cb5-2"><a href="#cb5-2"></a></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="cf">with</span> <span class="bu">open</span>(config, <span class="st">&quot;r&quot;</span>) <span class="im">as</span> stream:</span>
+<span id="cb5-4"><a href="#cb5-4"></a>    menu_config <span class="op">=</span> load(stream, Loader<span class="op">=</span>Loader)</span>
+<span id="cb5-5"><a href="#cb5-5"></a></span>
+<span id="cb5-6"><a href="#cb5-6"></a>menu <span class="op">=</span> menu_parser(menu_config)</span></code></pre></div>
+<h3 id="docs">Docs</h3>
+<p>Examples and additional details are available in the <a href="https://yummy-cereal.readthedocs.io/en/latest/">full documentation</a>.</p>
+<p>To generate the documentation locally:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="ex">multi-job</span> docs</span></code></pre></div>
+<h3 id="tests">Tests</h3>
+<p>Unit tests and behaviour tests are written with the pytest framework.</p>
+<p>To run tests:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1"></a><span class="ex">multi-job</span> tests</span></code></pre></div>
+<p>Additionally, an html report will be saved to the local directory.</p>
+<h3 id="contributing">Contributing</h3>
+<p>Please read <a href="CONTRIBUTING.md">CONTRIBUTING.md</a> for details on our code of conduct, and the process for submitting pull requests.</p>
+<h3 id="versioning">Versioning</h3>
+<p><a href="http://semver.org/">SemVer</a> is used for versioning. For a list of versions available, see the tags on this repository.</p>
+<p>Bump2version is used to version and tag changes. For example:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1"></a><span class="ex">bump2version</span> patch</span></code></pre></div>
+<p>Releases are made on every major change.</p>
+<h3 id="author">Author</h3>
+<ul>
+<li><strong>Joel Lefkowitz</strong> - <em>Initial work</em> - <a href="https://github.com/JoelLefkowitz">Joel Lefkowitz</a></li>
+</ul>
+<p>See also the list of contributors who participated in this project.</p>
+<h3 id="license">License</h3>
+<p>This project is licensed under the MIT License - see the <a href="LICENSE.md">LICENSE.md</a> file for details</p>
+<h3 id="acknowledgments">Acknowledgments</h3>
+<p>None yet!</p>
+<!--- Table links --->
