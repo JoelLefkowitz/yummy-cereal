@@ -2,7 +2,6 @@ from dataclasses import dataclass, field
 from typing import Any, Callable, Dict, Generic, List, Optional, TypeVar
 
 from .exceptions import AnnotationTypeError
-from .generic_fields import is_generic_dict, is_generic_list
 
 T = TypeVar("T")
 Parser = Callable[[Dict], T]

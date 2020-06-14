@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import TypeVar, Dict
+from typing import Dict, TypeVar
 
 import pytest
 
