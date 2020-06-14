@@ -1,21 +1,29 @@
-from typing import Any
+from typing import Dict
 
 
-class InvalidConfig(Exception):
-    def __init__(self, msg: str, config: Any) -> None:
-        msg = f"Validation check failed\n{msg}\nConfig: {config}"
-        super().__init__(msg)
+class PrettyException(Exception):
+    msg: str
+
+    def format_error_message(self, **kwargs) -> str:
+        return self.msg + "\n".join(**kwargs.items())
 
 
-class ConfigTypeError(Exception):
-    def __init__(self, config: Any) -> None:
-        msg = (
-            f"Config is not a dictionary type\nExpected: Dictionary\nRecieved: {config}"
-        )
-        super().__init__(msg)
+class InvalidConfig(PrettyException):
+    msg = "The given configuration failed a validation check"
+
+    def __init__(self, config: Dict) -> None:
+        super().__init__(self.format_error_message(config))
 
 
-class AnnotationTypeError(Exception):
-    def __init__(self, annotation_type: Any, config: Any) -> None:
-        msg = f"Annotated field type failed to parse config\nType: {annotation_type}\nConfig: {config}"
-        super().__init__(msg)
+class ConfigTypeError(PrettyException):
+    msg = "Cannot parse the given configuration. Expected a dictionary type"
+
+    def __init__(self, runtime_kwargs: Dict) -> None:
+        super().__init__(self.msg + runtime)
+
+
+class AnnotationTypeError(PrettyException):
+    msg = "Annotated field type could not parse the given configuration"
+
+    def __init__(self, runtime_kwargs: Dict) -> None:
+        super().__init__(self.msg + runtime)

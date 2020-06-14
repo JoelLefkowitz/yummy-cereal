@@ -1,60 +1,23 @@
 from dataclasses import dataclass, field
-from typing import Any, Dict, Generic, List, Optional, Protocol, Tuple, TypeVar, Union
+from typing import Any, Callable, Dict, Generic, List, Optional, TypeVar
 
-from .exceptions import AnnotationTypeError, ConfigTypeError, InvalidConfig
-from .utils import cls_annotations, inner_type, is_generic_dict, is_generic_list
+from .exceptions import AnnotationTypeError
+from .generic_fields import is_generic_dict, is_generic_list
 
 T = TypeVar("T")
-
-Result = Tuple[bool, str]
-DataSet = Dict[str, Any]
-
-
-class Parser(Protocol[T]):
-    def __call__(self, config: Dict) -> T:
-        ...
-
-
-ParserMap = Dict[Any, Parser]
-
-
-class Validator(Protocol):
-    def __call__(self, config: Dict) -> Union[bool, Result]:
-        ...
+Parser = Callable[[Dict], T]
+ParserMap = Dict[T, Parser[T]]
 
 
 @dataclass
-class ValidatedParser(Generic[T]):
-    parser: Parser[T]
-    validators: List[Validator]
-
-    def __call__(self, config: Dict) -> T:
-        self.validate(config)
-        return self.parser(config)
-
-    def validate(self, config: Dict) -> None:
-        for validator in self.validators:
-            if isinstance(result := validator(config), Tuple):
-                valid, msg = result
-            else:
-                valid, msg = result, None
-
-            if not valid:
-                raise InvalidConfig(msg, config)
-
-
-@dataclass
-class AnotatedFieldsParser:
+class AnnotationsParser(Generic[T]):
     cls: T
-    collector_field: Optional[str] = None
     collect_with_names: bool = False
-    field_defaults: DataSet = field(default_factory=dict)
+    collector_field: Optional[str] = None
+    field_defaults: Dict = field(default_factory=dict)
     typed_parsers: ParserMap = field(default_factory=dict)
 
     def __call__(self, config: Dict) -> T:
-        if not isinstance(config, dict):
-            raise ConfigTypeError(config)
-
         parsed_fields = {
             field_name: self.parse_field(field_name, field_value)
             for field_name, field_value in self.gather_fields(config).items()
