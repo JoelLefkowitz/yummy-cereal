@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Dict, List
 
-from yummy_cereal.annotated_fields import (
+from yummy_cereal.utils.annotations import (
     cls_is_annotated,
     field_is_generic_dict,
     field_is_generic_list,
