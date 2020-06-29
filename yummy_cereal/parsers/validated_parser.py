@@ -1,8 +1,10 @@
 from dataclasses import dataclass
-from typing import Dict, Generic, List
+from typing import Dict, Generic, List, TypeVar
 
-from .. import Parser, Validator
-from .exceptions import ValidationFailed
+from ..exceptions import ValidationFailed
+from ..protocols import Parser, Validator
+
+T = TypeVar("T")
 
 
 @dataclass
@@ -13,6 +15,5 @@ class ValidatedParser(Generic[T]):
     def __call__(self, config: Dict) -> T:
         for validator in self.validators:
             if not validator(config):
-                raise ValidationFailed({"Configuration": config, "Validator": validator})
-
+                raise ValidationFailed(config)
         return self.parser(config)

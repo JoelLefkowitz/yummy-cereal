@@ -25,33 +25,50 @@ Alternatively, you can clone the repo and build the package locally.
 
 Parsing objects from a configuration can become overly complicated,  particularly if the objects are listed by name. Rather than making the configuration overly verbose or creating specific parsers every time, suitable parser factories are necessary.
 
-### Example usage
+### Usage
 Consider the following menu configuration:
 
 ```yaml
+---
+name: Big munch grill
 language: English
+
 courses:
-    Appetizers:
-        - Fruit
-        - Muesli
-    Mains:
-        Pasta:
-            shapes:
-                - Penne
-                - Bow-tie
-        Pizza:
-            toppings:
-                - Margarita
-                - Farmhouse
-    Desserts:
-        - Cake
-        - Custard
-    Drinks:
-        - Tea
-        - Coffee
-    Wines:
-        - Red
-        - Rose
+  Appetizers:
+    - Pico de Gallo
+    - Pineapple Salsa
+    - Oven Baked Soft Pretzels
+    - Taco Ring
+    - Pizza bites
+
+  Main course:
+    Pasta:
+      sauce:
+        - rose
+        - alfredo
+        - cream
+      shapes:
+        - penne
+        - bow-tie
+        - ravioli
+    Pizza:
+      toppings:
+        - beef
+        - bazil
+        - tomato
+        - peppers
+
+  Desserts:
+    - Gooey Brownies
+    - Butterfinger Cookie Dough
+
+drinks:
+  - Fruit juice
+  - Green tea
+  - Coffee
+
+specials:
+  - Banana split
 ```
 
 We can make simple annotated classes:
@@ -75,14 +92,18 @@ class Course:
 
 @dataclass
 class Menu:
+    name: str
     language: str
     courses: List[Course]
+    specials: List[Dish]
+    drinks: List[Dish]
+
 ```
 
 And then create parsers:
 
 ```python
-from yummy_cereal import AnotatedFieldsParser
+from yummy_cereal import AnotationsParser
 
 dish_parser = AnotatedFieldsParser(cls=Dish, collector_field="details")
 
@@ -114,7 +135,7 @@ menu = menu_parser(menu_config)
 
 ### Docs
 
-Examples and additional details are available in the [full documentation](https://yummy-cereal.readthedocs.io/en/latest/).
+Additional details are available in the [full documentation](https://yummy-cereal.readthedocs.io/en/latest/).
 
 To generate the documentation locally:
 

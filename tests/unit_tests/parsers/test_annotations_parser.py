@@ -16,7 +16,8 @@ class Person:
 
 
 def test_AnnotationsParser() -> None:
-    person_parser = AnnotationsParser(Person)
+    house_parser = AnnotationsParser(House)
+    person_parser = AnnotationsParser(Person, specified_parsers={House: house_parser})
 
     personal_details = {
         "name": "Joel",

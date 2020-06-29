@@ -3,7 +3,7 @@ from typing import Dict
 
 import pytest
 
-from yummy_cereal import ValidationFailed, ValidatedParser
+from yummy_cereal import ValidatedParser, ValidationFailed
 
 
 @dataclass

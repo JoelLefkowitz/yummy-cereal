@@ -2,5 +2,5 @@ import pytest
 
 
 @pytest.mark.skip()
-def test_AnnotationsSerializer() -> None:
+def test_ValidatedSerializer() -> None:
     pass
