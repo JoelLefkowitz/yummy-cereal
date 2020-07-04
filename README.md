@@ -1,6 +1,6 @@
 # Yummy Cereal
 
-Object parser factories to simplify object configurations
+Object parser and serializer factories to simplify object configurations
 
 ### Status
 
@@ -23,44 +23,45 @@ Alternatively, you can clone the repo and build the package locally.
 
 ### Motivation
 
-Parsing objects from a configuration can become overly complicated,  particularly if the objects are listed by name. Rather than making the configuration overly verbose or creating specific parsers every time, suitable parser factories are necessary.
+Parsing and serializing objects to and from configurations can become overly complicated, particularly if the objects are listed by name. Suitable factories avoid having to make specific parsers or an overly verbose configuration.
 
-### Usage
-Consider the following menu configuration:
+#### Parsing
 
 ```yaml
 ---
 name: Big munch grill
-language: English
+languages:
+  - English
+  - French
 
 courses:
   Appetizers:
-    - Pico de Gallo
-    - Pineapple Salsa
-    - Oven Baked Soft Pretzels
-    - Taco Ring
-    - Pizza bites
+    Pico de Gallo:
+    Pineapple Salsa:
+    Oven Baked Soft Pretzels:
+    Taco Ring:
+    Pizza bites:
 
   Main course:
     Pasta:
-      sauce:
-        - rose
-        - alfredo
-        - cream
-      shapes:
-        - penne
-        - bow-tie
-        - ravioli
+      Sauce:
+        - Rose
+        - Alfredo
+        - Cream
+      Shapes:
+        - Penne
+        - Bow-tie
+        - Ravioli
     Pizza:
-      toppings:
-        - beef
-        - bazil
-        - tomato
-        - peppers
+      Toppings:
+        - Beef
+        - Bazil
+        - Tomato
+        - Peppers
 
   Desserts:
-    - Gooey Brownies
-    - Butterfinger Cookie Dough
+    Gooey Brownies:
+    Butterfinger Cookie Dough:
 
 drinks:
   - Fruit juice
@@ -74,8 +75,8 @@ specials:
 We can make simple annotated classes:
 
 ```python
-from dataclasses import dataclass
-from typing import Any, List
+from dataclasses import dataclass, field
+from typing import Any, Dict, List
 
 
 @dataclass
@@ -87,39 +88,28 @@ class Dish:
 @dataclass
 class Course:
     name: str
-    dishes: List[Dish]
+    dishes: List[Dish] = field(default_factory=list)
 
 
 @dataclass
 class Menu:
     name: str
-    language: str
-    courses: List[Course]
-    specials: List[Dish]
-    drinks: List[Dish]
-
+    languages: List[str]
+    courses: List[Course] = field(default_factory=list)
+    specials: List[Dish] = field(default_factory=list)
+    drinks: List[Dish] = field(default_factory=list)
 ```
 
 And then create parsers:
 
 ```python
-from yummy_cereal import AnotationsParser
+    dish_parser = AnnotationsParser(Dish)
+    
+    course_parser = AnnotationsParser(Course, specified_parsers={Dish: dish_parser})
 
-dish_parser = AnotatedFieldsParser(cls=Dish, collector_field="details")
-
-course_parser = AnotatedFieldsParser(
-    cls=Course,
-    collector_field="dishes",
-    collect_with_names=True,
-    typed_parsers={Dish: dish_parser},
-)
-
-menu_parser = AnotatedFieldsParser(
-    cls=Menu,
-    collector_field="courses",
-    collect_with_names=True,
-    typed_parsers={Course: course_parser},
-)
+    menu_parser = AnnotationsParser(
+        Menu, specified_parsers={Course: course_parser}
+    )
 ```
 
 Finally, we can parse the objects:
@@ -131,6 +121,45 @@ with open(config, "r") as stream:
     menu_config = load(stream, Loader=Loader)
 
 menu = menu_parser(menu_config)
+```
+
+```bash
+>>> menu
+Menu(name='Big munch grill', languages=['English', 'French'], courses=[Course(name='Appetizers'...
+```
+
+Attributes called "name" have been inferred from the dictionary style layout of the configuration.
+
+#### Validation
+
+We can specify a list of validation checks to perform before parsing the configuration data:
+
+```python
+from yummy_cereal import ValidatedParser
+
+validators = [
+  lambda config: config["name"] != "Big munch grill"
+]
+
+ValidatedParser(menu_parser, validators)
+```
+
+#### Serializing
+
+Just as we did with parsers, we can use class annotations to construct serializers:
+
+```python
+from yummy_cereal import AnnotationsSerializer
+
+dish_serializer = AnnotationsSerializer(Dish)
+
+course_serializer = AnnotationsSerializer(
+    Course, specified_serializers={Dish: dish_serializer}
+)
+
+menu_serializer = AnnotationsSerializer(
+    Menu, specified_serializers={Course: course_serializer, Dish: dish_serializer}
+)
 ```
 
 ### Docs

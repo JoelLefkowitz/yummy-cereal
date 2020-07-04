@@ -21,4 +21,3 @@ class Menu:
     courses: List[Course] = field(default_factory=list)
     specials: List[Dish] = field(default_factory=list)
     drinks: List[Dish] = field(default_factory=list)
-    locations: Dict[str, str] = field(default_factory=dict)

@@ -79,5 +79,4 @@ def i_output_the_serialized_menu(bdd_context: Dict):
         ],
         "specials": [{"name": "Banana split", "details": None}],
         "drinks": [],
-        "locations": {},
     }
