@@ -29,3 +29,15 @@ class MissingFieldError(Exception):
     def __init__(self, obj: Any, field_name: str) -> None:
         msg = f"Failed to serialize object\nMissing field name: {field_name}\nObject: {obj}"
         super().__init__(msg)
+
+
+class ListFieldSerializingError(Exception):
+    def __init__(self, field_data: Any, inner_field_serializer: Any) -> None:
+        msg = f"Failed to serialize list field\nInner serializer: {inner_field_serializer}\nField_data: {field_data}"
+        super().__init__(msg)
+
+
+class DictFieldSerializingError(Exception):
+    def __init__(self, field_data: Any, inner_field_serializer: Any) -> None:
+        msg = f"Failed to serialize dict field\nInner serializer: {inner_field_serializer}\nField_data: {field_data}"
+        super().__init__(msg)

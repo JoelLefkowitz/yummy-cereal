@@ -1,9 +1,19 @@
 from dataclasses import dataclass, field
-from typing import Any, Dict, Generic, TypeVar, List, Dict
+from typing import Any, Dict, Generic, List, TypeVar
 
-from ..exceptions import MissingFieldError
+from typing_inspect import get_args
+
+from ..exceptions import (
+    DictFieldSerializingError,
+    ListFieldSerializingError,
+    MissingFieldError,
+)
 from ..protocols import Factory, SerializerMap
-from ..utils.annotations import get_cls_annotations, field_is_generic_list, field_is_generic_dict
+from ..utils.annotations import (
+    field_is_generic_dict,
+    field_is_generic_list,
+    get_cls_annotations,
+)
 
 T = TypeVar("T")
 
@@ -20,16 +30,26 @@ class AnnotationsSerializer(Generic[T]):
 
         for field_name, field_type in annotations.items():
 
-            if field_is_generic_list(self.cls, field_name):
-                serialized_fields[field_name] = self.serialize_list_field(obj, field_name)
+            if field_is_generic_list(self.cls, field_name) and hasattr(obj, field_name):
+                serialized_fields[field_name] = self.serialize_list_field(
+                    obj, field_name, field_type
+                )
 
-            elif field_is_generic_dict(self.cls, field_name):
-                serialized_fields[field_name] = self.serialize_dict_field(obj, field_name)
+            elif field_is_generic_dict(self.cls, field_name) and hasattr(
+                obj, field_name
+            ):
+                serialized_fields[field_name] = self.serialize_dict_field(
+                    obj, field_name, field_type
+                )
 
             elif hasattr(obj, field_name):
                 field_data = getattr(obj, field_name)
                 field_serializer = self.select_field_serializer(field_type)
-                serialized_fields[field_name] = field_serializer(field_data)
+                serialized_fields[field_name] = (
+                    field_data
+                    if field_serializer is Any
+                    else field_serializer(field_data)
+                )
 
             elif field_name in self.field_defaults:
                 serialized_fields[field_name] = self.field_defaults[field_name]
@@ -46,10 +66,26 @@ class AnnotationsSerializer(Generic[T]):
             else field_type
         )
 
-    # TODO Write method
-    def serialize_list_field(self, obj: Any, field_name: str) -> List:
-        return []
+    def serialize_list_field(self, obj: Any, field_name: str, field_type: Any) -> List:
+        field_data = getattr(obj, field_name)
+        inner_field_type = get_args(field_type)[0]
+        inner_field_serializer = self.select_field_serializer(inner_field_type)
 
-    # TODO Write method
-    def serialize_dict_field(self, obj: Any, field_name: str) -> Dict:
-        return {}
+        if isinstance(field_data, list):
+            return [inner_field_serializer(i) for i in field_data]
+
+        else:
+            raise ListFieldSerializingError(field_data, inner_field_serializer)
+
+    def serialize_dict_field(self, obj: Any, field_name: str, field_type: Any) -> Dict:
+        field_data = getattr(obj, field_name)
+        inner_field_type = get_args(field_type)[0]
+        inner_field_serializer = self.select_field_serializer(inner_field_type)
+
+        if isinstance(field_data, dict):
+            return {k: inner_field_serializer(v) for k, v in field_data.items()}
+
+        else:
+            raise DictFieldSerializingError(
+                field_data, inner_field_serializer,
+            )
