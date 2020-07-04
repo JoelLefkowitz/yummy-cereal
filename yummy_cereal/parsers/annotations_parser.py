@@ -2,7 +2,8 @@ from dataclasses import dataclass, field
 from typing import Any, Dict, Generic, List, TypeVar
 
 from typing_inspect import get_args
-from ..exceptions import FieldParsingError, ListFieldParsingError, DictFieldParsingError
+
+from ..exceptions import DictFieldParsingError, FieldParsingError, ListFieldParsingError
 from ..protocols import Factory, ParserMap
 from ..utils.annotations import (
     field_is_generic_dict,

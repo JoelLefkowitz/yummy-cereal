@@ -1,7 +1,5 @@
 from dataclasses import dataclass
 
-import pytest
-
 from yummy_cereal import AnnotationsSerializer
 
 
@@ -17,11 +15,10 @@ class Person:
     house: House
 
 
-@pytest.mark.skip()
 def test_AnnotationsSerializer() -> None:
     house_serializer = AnnotationsSerializer(House)
     person_serializer = AnnotationsSerializer(
-        Person, specified_parsers={House: house_serializer}
+        Person, specified_serializers={House: house_serializer}
     )
 
     house = House("1", "Sesame street")
