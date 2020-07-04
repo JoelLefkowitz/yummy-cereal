@@ -16,4 +16,4 @@ class ValidatedSerializer:
         for validator in self.validators:
             if not validator(obj):
                 raise ValidationFailed(obj)
-        return selfializer(obj)
+        return self.serializer(obj)

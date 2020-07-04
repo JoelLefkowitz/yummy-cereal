@@ -24,6 +24,7 @@ if __name__ == "__main__":
                 "pytest-html",
                 "pytest-sugar",
                 "pytest-bdd",
+                "pytest-watch",
             ],
         },
     )

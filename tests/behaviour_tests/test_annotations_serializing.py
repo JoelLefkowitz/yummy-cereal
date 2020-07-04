@@ -1,9 +1,11 @@
 # coding=utf-8
 """Annotations serializing feature tests."""
 
+import pytest
 from pytest_bdd import given, scenario, then, when
 
 
+@pytest.mark.skip()
 @scenario("annotations_serializing.feature", "Serializing a menu to a yaml file")
 def test_serializing_a_menu_to_a_yaml_file():
     """Serializing a menu to a yaml file."""

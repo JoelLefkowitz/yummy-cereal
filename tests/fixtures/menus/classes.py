@@ -1,5 +1,5 @@
-from dataclasses import dataclass
-from typing import Any, List
+from dataclasses import dataclass, field
+from typing import Any, Dict, List
 
 
 @dataclass
@@ -11,13 +11,14 @@ class Dish:
 @dataclass
 class Course:
     name: str
-    dishes: List[Dish]
+    dishes: List[Dish] = field(default_factory=list)
 
 
 @dataclass
 class Menu:
     name: str
-    language: str
-    courses: List[Course]
-    specials: List[Dish]
-    drinks: List[Dish]
+    languages: List[str]
+    courses: List[Course] = field(default_factory=list)
+    specials: List[Dish] = field(default_factory=list)
+    drinks: List[Dish] = field(default_factory=list)
+    locations: Dict[str, str] = field(default_factory=dict)

@@ -59,3 +59,4 @@ def i_recieve_a_menu_object(bdd_context: Dict):
     """I recieve a menu object."""
     menu = bdd_context["menu"]
     assert isinstance(menu, Menu)
+    assert all([isinstance(course, Course) for course in menu.courses])
