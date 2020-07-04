@@ -1,9 +1,9 @@
 from dataclasses import dataclass, field
-from typing import Any, Dict, Generic, TypeVar
+from typing import Any, Dict, Generic, TypeVar, List, Dict
 
 from ..exceptions import MissingFieldError
 from ..protocols import Factory, SerializerMap
-from ..utils.annotations import get_cls_annotations
+from ..utils.annotations import get_cls_annotations, field_is_generic_list, field_is_generic_dict
 
 T = TypeVar("T")
 
@@ -20,7 +20,13 @@ class AnnotationsSerializer(Generic[T]):
 
         for field_name, field_type in annotations.items():
 
-            if hasattr(obj, field_name):
+            if field_is_generic_list(self.cls, field_name):
+                serialized_fields[field_name] = self.serialize_list_field(obj, field_name)
+
+            elif field_is_generic_dict(self.cls, field_name):
+                serialized_fields[field_name] = self.serialize_dict_field(obj, field_name)
+
+            elif hasattr(obj, field_name):
                 field_data = getattr(obj, field_name)
                 field_serializer = self.select_field_serializer(field_type)
                 serialized_fields[field_name] = field_serializer(field_data)
@@ -39,3 +45,11 @@ class AnnotationsSerializer(Generic[T]):
             if field_type in self.specified_serializers
             else field_type
         )
+
+    # TODO Write method
+    def serialize_list_field(self, obj: Any, field_name: str) -> List:
+        return []
+
+    # TODO Write method
+    def serialize_dict_field(self, obj: Any, field_name: str) -> Dict:
+        return {}

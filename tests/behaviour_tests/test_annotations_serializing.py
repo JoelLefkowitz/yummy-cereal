@@ -1,19 +1,34 @@
 # coding=utf-8
 """Annotations serializing feature tests."""
 
+import os
+from typing import Dict
+
 import pytest
 from pytest_bdd import given, scenario, then, when
 
+from yummy_cereal import AnnotationsSerializer
+from yummy_cereal.utils.formatters import from_yaml
 
-@pytest.mark.skip()
-@scenario("annotations_serializing.feature", "Serializing a menu to a yaml file")
-def test_serializing_a_menu_to_a_yaml_file():
-    """Serializing a menu to a yaml file."""
+from ..fixtures.menus.classes import Course, Dish, Menu
+
+
+@pytest.fixture()
+def bdd_context() -> Dict:
+    return {}
+
+
+@scenario("annotations_serializing.feature", "Serializing a menu")
+def test_serializing_a_menu():
+    """Serializing a menu"""
 
 
 @given("I have a menu object")
-def i_have_a_menu_object():
+def i_have_a_menu_object(bdd_context: Dict):
     """I have a menu object."""
+
+    # TODO Add more fields to the test menu
+    bdd_context["menu"] = Menu("", [])
 
 
 @given("I have annotated menu classes")
@@ -22,15 +37,22 @@ def i_have_annotated_menu_classes():
 
 
 @when("I create a menu serializer")
-def i_create_a_menu_serializer():
+def i_create_a_menu_serializer(bdd_context: Dict):
     """I create a menu serializer."""
+    bdd_context["menu_serializer"] = AnnotationsSerializer(Menu)
 
 
 @when("I serialize the menu object")
-def i_serialize_the_menu_object():
+def i_serialize_the_menu_object(bdd_context: Dict):
     """I serialize the menu object."""
+    menu = bdd_context["menu"]
+    menu_serializer = bdd_context["menu_serializer"]
+    bdd_context["serialized_menu"] = menu_serializer(menu)
 
 
-@then("I output the serialized menu")
-def i_output_the_serialized_menu():
-    """I output the serialized menu."""
+@then("I recieve a serialized menu")
+def i_output_the_serialized_menu(bdd_context: Dict):
+    """I recieve a serialized menu."""
+    serialized_menu = bdd_context["serialized_menu"]
+    assert isinstance(serialized_mnu, Dict)
+    assert all([])

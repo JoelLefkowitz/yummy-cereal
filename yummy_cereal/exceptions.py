@@ -27,5 +27,5 @@ class DictFieldParsingError(Exception):
 
 class MissingFieldError(Exception):
     def __init__(self, obj: Any, field_name: str) -> None:
-        msg = f""
+        msg = f"Failed to serialize object\nMissing field name: {field_name}\nObject: {obj}"
         super().__init__(msg)
