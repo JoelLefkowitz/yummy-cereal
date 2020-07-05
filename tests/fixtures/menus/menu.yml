@@ -34,9 +34,9 @@ courses:
     Butterfinger Cookie Dough:
 
 drinks:
-  - Fruit juice
-  - Green tea
-  - Coffee
+  Fruit juice:
+  Green tea:
+  Coffee:
 
 specials:
-  - Banana split
+  Banana split:

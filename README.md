@@ -64,12 +64,12 @@ courses:
     Butterfinger Cookie Dough:
 
 drinks:
-  - Fruit juice
-  - Green tea
-  - Coffee
+  Fruit juice:
+  Green tea:
+  Coffee:
 
 specials:
-  - Banana split
+  Banana split:
 ```
 
 We can make simple annotated classes:
@@ -108,7 +108,7 @@ And then create parsers:
   course_parser = AnnotationsParser(Course, specified_parsers={Dish: dish_parser})
 
   menu_parser = AnnotationsParser(
-      Menu, specified_parsers={Course: course_parser}
+      Menu, specified_parsers={Course: course_parser, Dish: dish_parser}
   )
 ```
 

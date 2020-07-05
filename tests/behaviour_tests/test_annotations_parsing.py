@@ -42,7 +42,7 @@ def i_create_a_menu_parser(bdd_context: Dict):
     dish_parser = AnnotationsParser(Dish)
     course_parser = AnnotationsParser(Course, specified_parsers={Dish: dish_parser})
     bdd_context["menu_parser"] = AnnotationsParser(
-        Menu, specified_parsers={Course: course_parser}
+        Menu, specified_parsers={Course: course_parser, Dish: dish_parser}
     )
 
 
