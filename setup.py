@@ -12,6 +12,7 @@ if __name__ == "__main__":
             "dist": ["wheel", "twine", "bump2version"],
             "docs": [
                 "sphinx",
+                "pyimport",
                 "pypandoc",
                 "sphinxcontrib.apidoc",
                 "sphinxcontrib.pandoc_markdown",

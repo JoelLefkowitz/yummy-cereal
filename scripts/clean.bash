@@ -1,7 +1,7 @@
 #!/bin/bash
 # Remove directory contents
 
-for directory in build dist templ8.egg-info; do
+for directory in build dist templ8.egg-info docs/api; do
   target=$(pwd)/$directory
   read -p "Would you like to delete $target? `echo $'\n> '`"
   if [[ $REPLY =~ ^[Yy]$ ]]; then
