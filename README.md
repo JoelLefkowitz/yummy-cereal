@@ -103,13 +103,13 @@ class Menu:
 And then create parsers:
 
 ```python
-    dish_parser = AnnotationsParser(Dish)
-    
-    course_parser = AnnotationsParser(Course, specified_parsers={Dish: dish_parser})
+  dish_parser = AnnotationsParser(Dish)
+  
+  course_parser = AnnotationsParser(Course, specified_parsers={Dish: dish_parser})
 
-    menu_parser = AnnotationsParser(
-        Menu, specified_parsers={Course: course_parser}
-    )
+  menu_parser = AnnotationsParser(
+      Menu, specified_parsers={Course: course_parser}
+  )
 ```
 
 Finally, we can parse the objects:

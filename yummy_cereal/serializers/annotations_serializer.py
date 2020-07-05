@@ -25,6 +25,18 @@ class AnnotationsSerializer(Generic[T]):
     specified_serializers: SerializerMap = field(default_factory=dict)
 
     def __call__(self, obj: T) -> Dict:
+        """
+        Serializes an object based on its class annotations
+
+        Args:
+            obj (T): Object to serialize
+
+        Raises:
+            MissingFieldError: An annotated was not provided a value
+
+        Returns:
+            Dict: Serialized object
+        """        
         annotations = get_cls_annotations(self.cls)
         serialized_fields = self.field_defaults.copy()
 
@@ -45,6 +57,7 @@ class AnnotationsSerializer(Generic[T]):
             elif hasattr(obj, field_name):
                 field_data = getattr(obj, field_name)
                 field_serializer = self.select_field_serializer(field_type)
+
                 serialized_fields[field_name] = (
                     field_data
                     if field_serializer is Any
@@ -60,6 +73,15 @@ class AnnotationsSerializer(Generic[T]):
         return serialized_fields
 
     def select_field_serializer(self, field_type: Any) -> Any:
+        """
+        Selects which serializer to use for a given field type
+
+        Args:
+            field_type (Any): Type of the field to serialize
+
+        Returns:
+            Any: Selected serializer to use
+        """        
         return (
             self.specified_serializers[field_type]
             if field_type in self.specified_serializers
@@ -67,6 +89,20 @@ class AnnotationsSerializer(Generic[T]):
         )
 
     def serialize_list_field(self, obj: Any, field_name: str, field_type: Any) -> List:
+        """
+        Serializes a list field with its inner type
+
+        Args:
+            obj (Any): Object to serialize
+            field_name (str): Name of the object's list field
+            field_type (Any): Type of the object's list field
+
+        Raises:
+            ListFieldSerializingError: The inner field data was not itself a list
+
+        Returns:
+            List: List of serialized inner objects
+        """        
         field_data = getattr(obj, field_name)
         inner_field_type = get_args(field_type)[0]
         inner_field_serializer = self.select_field_serializer(inner_field_type)
@@ -78,6 +114,20 @@ class AnnotationsSerializer(Generic[T]):
             raise ListFieldSerializingError(field_data, inner_field_serializer)
 
     def serialize_dict_field(self, obj: Any, field_name: str, field_type: Any) -> Dict:
+        """
+        Serializes a dict field with its inner type
+
+        Args:
+            obj (Any): Object to serialize
+            field_name (str): Name of the object's dict field
+            field_type (Any): Type of the object's dict field
+
+        Raises:
+            DictFieldSerializingError: The inner field data was not itself a dict
+
+        Returns:
+            Dict: Dict of serialized inner objects
+        """         
         field_data = getattr(obj, field_name)
         inner_field_type = get_args(field_type)[0]
         inner_field_serializer = self.select_field_serializer(inner_field_type)

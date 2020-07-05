@@ -13,6 +13,18 @@ class ValidatedSerializer:
     validators: List[Validator]
 
     def __call__(self, obj: T) -> Dict:
+        """
+        Runs each of self.validatiors the calls self.serializer on success
+
+        Args:
+            obj (T): Object to be serialized
+
+        Raises:
+            ValidationFailed: One or more validators will return False
+
+        Returns:
+            Dict: Serialized object
+        """        
         for validator in self.validators:
             if not validator(obj):
                 raise ValidationFailed(obj)

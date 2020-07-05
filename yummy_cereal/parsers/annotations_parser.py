@@ -21,11 +21,29 @@ class AnnotationsParser(Generic[T]):
     specified_parsers: ParserMap = field(default_factory=dict)
 
     def __call__(self, config: Dict) -> T:
+        """
+        Parses an object based on its class annotations
+
+        Args:
+            config (Dict): Configuration to parse
+
+        Returns:
+            T: Parsed object
+        """        
         parsed_fields = {k: self.parse_field(k, v) for k, v in config.items()}
         parser_kwargs = {**self.field_defaults, **parsed_fields}
         return self.cls(**parser_kwargs)
 
     def select_field_parser(self, field_type: Any) -> Any:
+        """
+        Selects which parser to use for a given field type
+
+        Args:
+            field_type (Any): Type of the field to parse
+
+        Returns:
+            Any: Selected parser to use
+        """ 
         return (
             self.specified_parsers[field_type]
             if field_type in self.specified_parsers
@@ -33,6 +51,19 @@ class AnnotationsParser(Generic[T]):
         )
 
     def parse_field(self, field_name: Any, raw_field_value: Any) -> Any:
+        """
+        Parses a field based on its class annotations
+
+        Args:
+            field_name (Any): Name of the object's field  
+            raw_field_value (Any): Field data to parse 
+
+        Raises:
+            FieldParsingError: The field data could not be parsed
+
+        Returns:
+            Any: Parsed field data
+        """
         annotations = get_cls_annotations(self.cls)
         field_type = annotations[field_name]
 
@@ -70,6 +101,20 @@ class AnnotationsParser(Generic[T]):
         inner_field_parser: Any,
         inner_field_annotations: Dict,
     ) -> List:
+        """
+        Parses an object's list field
+
+        Args:
+            raw_field_value (Any): List field data to parse
+            inner_field_parser (Any): Inner field parser type
+            inner_field_annotations (Dict): Annotations belonging to the inner field type
+
+        Raises:
+            ListFieldParsingError: The list field data was not itself or a list or able to be converted to a dictionary with names
+
+        Returns:
+            List: Parsed list field
+        """        
         if isinstance(raw_field_value, list):
             return [inner_field_parser(i) for i in raw_field_value]
 
@@ -94,6 +139,20 @@ class AnnotationsParser(Generic[T]):
         inner_field_parser: Any,
         inner_field_annotations: Dict,
     ) -> Dict:
+        """
+        Parses an object's dict field
+
+        Args:
+            raw_field_value (Any): dict field data to parse
+            inner_field_parser (Any): Inner field parser type
+            inner_field_annotations (Dict): Annotations belonging to the inner field type
+
+        Raises:
+            DictFieldParsingError: The dict field data was not itself or a dict
+
+        Returns:
+            Dict: Parsed dict field
+        """   
         if isinstance(raw_field_value, dict):
             return {k: inner_field_parser(v) for k, v in raw_field_value.items()}
 
