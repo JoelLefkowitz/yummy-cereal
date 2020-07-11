@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Dict
 
 
 class ValidationFailed(Exception):
@@ -22,6 +22,12 @@ class ListFieldParsingError(Exception):
 class DictFieldParsingError(Exception):
     def __init__(self, inner_field_parser: Any, raw_field_value: Any) -> None:
         msg = f"Failed to parse dict field\nInner parser: {inner_field_parser}\nField value: {raw_field_value}"
+        super().__init__(msg)
+
+
+class MissingAnnotationError(Exception):
+    def __init__(self, field_name: str, annotations: Dict) -> None:
+        msg = f"Failed to parse field\nMissing field: {field_name}\nAnnotations: {annotations}"
         super().__init__(msg)
 
 
