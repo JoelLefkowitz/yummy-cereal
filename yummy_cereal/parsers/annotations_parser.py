@@ -3,24 +3,33 @@ from typing import Any, Dict, Generic, List, TypeVar
 
 from typing_inspect import get_args
 
-from ..exceptions import DictFieldParsingError, FieldParsingError, ListFieldParsingError, MissingAnnotationError
 from ..protocols import Factory, ParserMap
 from ..utils.annotations import (
     field_is_generic_dict,
     field_is_generic_list,
     get_cls_annotations,
 )
+from .exceptions import (
+    DictFieldParsingError,
+    FieldParsingError,
+    ListFieldParsingError,
+    MissingAnnotationError,
+)
 
 T = TypeVar("T")
+
+# TODO Implement field_mappings
+# TODO serializer output format yaml or json
 
 
 @dataclass
 class AnnotationsParser(Generic[T]):
     cls: Factory[T]
     field_defaults: Dict = field(default_factory=dict)
+    field_mappings: Dict = field(default_factory=dict)
     specified_parsers: ParserMap = field(default_factory=dict)
 
-    def __call__(self, config: Dict) -> T:
+    def __call__(self: T, config: Dict) -> T:
         """
         Parses an object based on its class annotations
 
@@ -29,7 +38,7 @@ class AnnotationsParser(Generic[T]):
 
         Returns:
             T: Parsed object
-        """        
+        """
         parsed_fields = {k: self.parse_field(k, v) for k, v in config.items()}
         parser_kwargs = {**self.field_defaults, **parsed_fields}
         return self.cls(**parser_kwargs)
@@ -43,7 +52,7 @@ class AnnotationsParser(Generic[T]):
 
         Returns:
             Any: Selected parser to use
-        """ 
+        """
         return (
             self.specified_parsers[field_type]
             if field_type in self.specified_parsers
@@ -65,7 +74,7 @@ class AnnotationsParser(Generic[T]):
             Any: Parsed field data
         """
 
-        # TODO Check keys before lookup and raise exception
+        #  TODO Check keys before lookup and raise exception
         annotations = get_cls_annotations(self.cls)
 
         if not field_name in annotations:
@@ -120,11 +129,14 @@ class AnnotationsParser(Generic[T]):
 
         Returns:
             List: Parsed list field
-        """        
+        """
 
         if isinstance(raw_field_value, list):
             try:
-                return [inner_field_parser(i) if i is not None else None for i in raw_field_value]
+                return [
+                    inner_field_parser(i) if i is not None else None
+                    for i in raw_field_value
+                ]
 
             except TypeError:
                 raise ListFieldParsingError(inner_field_parser, raw_field_value)
@@ -138,7 +150,9 @@ class AnnotationsParser(Generic[T]):
             group_field, group_type = inner_field_annotations.popitem()
             try:
                 return [
-                    inner_field_parser({"name": k, group_field: v if v is not None else None})
+                    inner_field_parser(
+                        {"name": k, group_field: v if v is not None else None}
+                    )
                     for k, v in raw_field_value.items()
                 ]
 
@@ -167,14 +181,15 @@ class AnnotationsParser(Generic[T]):
 
         Returns:
             Dict: Parsed dict field
-        """   
+        """
         if not isinstance(raw_field_value, dict):
             raise DictFieldParsingError(inner_field_parser, raw_field_value)
 
         try:
             return {
-                k: inner_field_parser(v) if v is not None else None for k, v in raw_field_value.items()
+                k: inner_field_parser(v) if v is not None else None
+                for k, v in raw_field_value.items()
             }
-        
+
         except TypeError:
             raise DictFieldParsingError(inner_field_parser, raw_field_value)

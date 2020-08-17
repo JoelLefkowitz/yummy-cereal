@@ -8,7 +8,9 @@ from pytest_bdd import given, scenario, then, when
 
 from yummy_cereal import AnnotationsSerializer
 
-from ..fixtures.menus.classes import Course, Dish, Menu
+from ..models.menus.course import Course
+from ..models.menus.dish import Dish
+from ..models.menus.menu import Menu
 
 
 @pytest.fixture()
@@ -22,16 +24,8 @@ def test_serializing_a_menu():
 
 
 @given("I have a menu object")
-def i_have_a_menu_object(bdd_context: Dict):
+def i_have_a_menu_object():
     """I have a menu object."""
-    bdd_context["menu"] = Menu(
-        name="Big munch grill",
-        languages=["English", "French"],
-        courses=[
-            Course("Appetizers", [Dish("Pico de Gallo"), Dish("Pineapple Salsa")])
-        ],
-        specials=[Dish("Banana split")],
-    )
 
 
 @given("I have annotated menu classes")
@@ -52,31 +46,13 @@ def i_create_a_menu_serializer(bdd_context: Dict):
 
 
 @when("I serialize the menu object")
-def i_serialize_the_menu_object(bdd_context: Dict):
+def i_serialize_the_menu_object(bdd_context: Dict, parsed_menu: Menu):
     """I serialize the menu object."""
-    menu = bdd_context["menu"]
     menu_serializer = bdd_context["menu_serializer"]
-    bdd_context["serialized_menu"] = menu_serializer(menu)
+    bdd_context["serialized_menu"] = menu_serializer(parsed_menu)
 
 
 @then("I recieve a serialized menu")
-def i_output_the_serialized_menu(bdd_context: Dict):
+def i_output_the_serialized_menu(bdd_context: Dict, serialized_menu: Dict):
     """I recieve a serialized menu."""
-    serialized_menu = bdd_context["serialized_menu"]
-    assert isinstance(serialized_menu, Dict)
-    print(serialized_menu)
-    assert serialized_menu == {
-        "name": "Big munch grill",
-        "languages": ["English", "French"],
-        "courses": [
-            {
-                "name": "Appetizers",
-                "dishes": [
-                    {"name": "Pico de Gallo", "details": None},
-                    {"name": "Pineapple Salsa", "details": None},
-                ],
-            }
-        ],
-        "specials": [{"name": "Banana split", "details": None}],
-        "drinks": [],
-    }
+    assert bdd_context["serialized_menu"] == serialized_menu

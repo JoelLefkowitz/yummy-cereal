@@ -3,16 +3,16 @@ from typing import Any, Dict, Generic, List, TypeVar
 
 from typing_inspect import get_args
 
-from ..exceptions import (
-    DictFieldSerializingError,
-    ListFieldSerializingError,
-    MissingFieldError,
-)
 from ..protocols import Factory, SerializerMap
 from ..utils.annotations import (
     field_is_generic_dict,
     field_is_generic_list,
     get_cls_annotations,
+)
+from .exceptions import (
+    DictFieldSerializingError,
+    ListFieldSerializingError,
+    MissingFieldError,
 )
 
 T = TypeVar("T")
@@ -36,7 +36,7 @@ class AnnotationsSerializer(Generic[T]):
 
         Returns:
             Dict: Serialized object
-        """        
+        """
         annotations = get_cls_annotations(self.cls)
         serialized_fields = self.field_defaults.copy()
 
@@ -81,7 +81,7 @@ class AnnotationsSerializer(Generic[T]):
 
         Returns:
             Any: Selected serializer to use
-        """        
+        """
         return (
             self.specified_serializers[field_type]
             if field_type in self.specified_serializers
@@ -102,7 +102,7 @@ class AnnotationsSerializer(Generic[T]):
 
         Returns:
             List: List of serialized inner objects
-        """        
+        """
         field_data = getattr(obj, field_name)
         inner_field_type = get_args(field_type)[0]
         inner_field_serializer = self.select_field_serializer(inner_field_type)
@@ -127,7 +127,7 @@ class AnnotationsSerializer(Generic[T]):
 
         Returns:
             Dict: Dict of serialized inner objects
-        """         
+        """
         field_data = getattr(obj, field_name)
         inner_field_type = get_args(field_type)[0]
         inner_field_serializer = self.select_field_serializer(inner_field_type)

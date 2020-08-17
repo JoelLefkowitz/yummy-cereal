@@ -1,24 +1,18 @@
-from dataclasses import dataclass
-from typing import Dict
+from typing import Any
 
 import pytest
 
-from yummy_cereal import ValidatedParser, ValidationFailed
+from yummy_cereal import Parser, ParserValidationFailed, ValidatedParser
 
 
-@dataclass
-class Person:
-    name: str
+def test_ValidatedParser(value_parser: Parser[Any]) -> None:
+    validators = [lambda x: x != 0, lambda x: x % 2 != 1]
+    validated_parser = ValidatedParser(value_parser, validators)
 
+    with pytest.raises(ParserValidationFailed):
+        validated_parser({"value": 0})
 
-def person_parser(config: Dict) -> Person:
-    return Person(config["name"])
+    with pytest.raises(ParserValidationFailed):
+        validated_parser({"value": 1})
 
-
-def test_ValidatedParser() -> None:
-    name_validators = [lambda config: config["name"] != "Joel"]
-    validated_parser = ValidatedParser(person_parser, name_validators)
-    assert validated_parser({"name": "John"}) == Person("John")
-
-    with pytest.raises(ValidationFailed):
-        validated_parser({"name": "Joel"})
+    assert validated_parser({"value": 2}) == 2

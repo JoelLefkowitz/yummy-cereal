@@ -1,17 +1,8 @@
 from dataclasses import dataclass, field
-from typing import Any, Dict, List
+from typing import List
 
-
-@dataclass
-class Dish:
-    name: str
-    details: Any = None
-
-
-@dataclass
-class Course:
-    name: str
-    dishes: List[Dish] = field(default_factory=list)
+from .course import Course
+from .dish import Dish
 
 
 @dataclass
