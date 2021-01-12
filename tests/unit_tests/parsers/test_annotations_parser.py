@@ -1,31 +1,18 @@
-from dataclasses import dataclass
-
 from yummy_cereal import AnnotationsParser
 
-
-@dataclass
-class House:
-    number: int
-    street: str
+from ...models.people.house import House
+from ...models.people.person import Person
 
 
-@dataclass
-class Person:
-    name: str
-    house: House
-
-
-def test_AnnotationsParser() -> None:
+def test_AnnotationsParser(big_bird: Person) -> None:
     house_parser = AnnotationsParser(House)
     person_parser = AnnotationsParser(Person, specified_parsers={House: house_parser})
 
-    personal_details = {
-        "name": "Joel",
-        "house": {"number": 1, "street": "Sesame street"},
-    }
+    person = person_parser(
+        {
+            "name": big_bird.name,
+            "house": {"number": big_bird.house.number, "street": big_bird.house.street},
+        }
+    )
 
-    person = person_parser(personal_details)
-
-    assert person.name == "Joel"
-    assert person.house.number == 1
-    assert person.house.street == "Sesame street"
+    assert person == big_bird

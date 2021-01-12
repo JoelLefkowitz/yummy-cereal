@@ -1,16 +1,18 @@
 # coding=utf-8
 """Annotations parsing feature tests."""
 
-import os
 from typing import Dict
 
 import pytest
-from pytest_bdd import given, scenario, then, when
-
+from pytest_bdd import given
+from pytest_bdd import scenario
+from pytest_bdd import then
+from pytest_bdd import when
 from yummy_cereal import AnnotationsParser
-from yummy_cereal.utils.formatters import from_yaml
 
-from ..fixtures.menus.classes import Course, Dish, Menu
+from ..models.menus.course import Course
+from ..models.menus.dish import Dish
+from ..models.menus.menu import Menu
 
 
 @pytest.fixture()
@@ -24,11 +26,8 @@ def test_parsing_a_menu_from_a_yaml_file():
 
 
 @given("I have a serialized menu")
-def i_have_a_serialized_menu(bdd_context: Dict):
+def i_have_a_serialized_menu():
     """I have a serialized menu."""
-    bdd_context["serialized_menu"] = from_yaml(
-        os.path.abspath("tests/fixtures/menus/menu.yml")
-    )
 
 
 @given("I have annotated menu classes")
@@ -47,16 +46,13 @@ def i_create_a_menu_parser(bdd_context: Dict):
 
 
 @when("I parse the serialized menu")
-def i_parse_the_serialized_menu(bdd_context: Dict):
+def i_parse_the_serialized_menu(bdd_context: Dict, serialized_menu: Menu):
     """I parse the serialized menu."""
-    serialized_menu = bdd_context["serialized_menu"]
     menu_parser = bdd_context["menu_parser"]
-    bdd_context["menu"] = menu_parser(serialized_menu)
+    bdd_context["parsed_menu"] = menu_parser(serialized_menu)
 
 
 @then("I recieve a menu object")
-def i_recieve_a_menu_object(bdd_context: Dict):
+def i_recieve_a_menu_object(bdd_context: Dict, parsed_menu: Menu):
     """I recieve a menu object."""
-    menu = bdd_context["menu"]
-    assert isinstance(menu, Menu)
-    assert all([isinstance(course, Course) for course in menu.courses])
+    assert bdd_context["parsed_menu"] == parsed_menu

@@ -1,17 +1,22 @@
 from dataclasses import dataclass
-from typing import Dict, Generic, List, TypeVar
+from typing import Dict
+from typing import Generic
+from typing import List
+from typing import TypeVar
 
-from ..exceptions import ValidationFailed
-from ..protocols import Parser, Validator
+from ...protocols import Parser
+from ...protocols import Validator
+from .exceptions import ParserValidationFailed
 
 T = TypeVar("T")
 
 
 @dataclass
-class ValidatedParser(Generic[T]):    
+class ValidatedParser(Generic[T]):
     parser: Parser[T]
     validators: List[Validator]
-    def __call__(self, config: Dict) -> T:
+
+    def __call__(self: T, config: Dict) -> T:
         """
         Runs each of self.validatiors the calls self.parser on success
 
@@ -23,8 +28,8 @@ class ValidatedParser(Generic[T]):
 
         Returns:
             T: Parsed object
-        """        
+        """
         for validator in self.validators:
             if not validator(config):
-                raise ValidationFailed(config)
+                raise ParserValidationFailed(config)
         return self.parser(config)

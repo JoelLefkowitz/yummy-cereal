@@ -1,30 +1,16 @@
-from dataclasses import dataclass
-
 from yummy_cereal import AnnotationsSerializer
 
-
-@dataclass
-class House:
-    number: int
-    street: str
+from ...models.people.house import House
+from ...models.people.person import Person
 
 
-@dataclass
-class Person:
-    name: str
-    house: House
-
-
-def test_AnnotationsSerializer() -> None:
+def test_AnnotationsSerializer(big_bird: Person) -> None:
     house_serializer = AnnotationsSerializer(House)
     person_serializer = AnnotationsSerializer(
         Person, specified_serializers={House: house_serializer}
     )
 
-    house = House("1", "Sesame street")
-    person = Person("Joel", house)
-    serialized_person = person_serializer(person)
-
-    assert serialized_person["name"] == "Joel"
-    assert serialized_person["house"]["number"] == 1
-    assert serialized_person["house"]["street"] == "Sesame street"
+    serialized_person = person_serializer(big_bird)
+    assert serialized_person["name"] == big_bird.name
+    assert serialized_person["house"]["number"] == big_bird.house.number
+    assert serialized_person["house"]["street"] == big_bird.house.street

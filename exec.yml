@@ -1,0 +1,73 @@
+src:
+  compile:
+    - npx
+    - tsc
+
+  mypy: 
+    - mypy
+    - .
+    - --config-file
+    - mypy.ini
+
+  pylint:
+    - pylint
+    - ./**/*.py
+    - -r
+    - n
+    - --rcfile
+    - pylintrc.conf
+
+  bandit:
+    - bandit
+    - .
+    - -l
+    - -i
+    - -r
+    - --quiet
+    - -c
+    - bandit.yml
+  
+  eslint:
+    - npx
+    - eslint
+    - ./**/*.{ts,js,html,css}
+    - -c
+    - eslint.json
+  
+  cspell: 
+    - cspell
+    - ./**/*
+    - -c
+    - cspell.json
+  
+  black: 
+    - black
+    - .
+  
+  prettier: 
+    - prettier
+    - ./**/*.{js,ts,html,css}
+    - --write
+
+  autoflake:
+    - autoflake
+    - .
+    - -ri
+    - --exclude
+    - conftest.py
+    - --remove-all-unused-imports
+    - --remove-unused-variables
+    - --ignore-init-module-imports
+    
+  presort:
+    - isort
+    - "./**/*"
+    - --force-single-line-imports
+
+  isort: 
+   - isort 
+   - "./**/*"
+  
+  csscomb: 
+    - csscomb
+    - .

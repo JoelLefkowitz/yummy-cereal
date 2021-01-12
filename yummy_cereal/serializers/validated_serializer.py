@@ -1,8 +1,11 @@
 from dataclasses import dataclass
-from typing import Dict, List, TypeVar
+from typing import Dict
+from typing import List
+from typing import TypeVar
 
-from ..exceptions import ValidationFailed
-from ..protocols import Serializer, Validator
+from ..protocols import Serializer
+from ..protocols import Validator
+from .exceptions import SerializerValidationFailed
 
 T = TypeVar("T")
 
@@ -24,8 +27,8 @@ class ValidatedSerializer:
 
         Returns:
             Dict: Serialized object
-        """        
+        """
         for validator in self.validators:
             if not validator(obj):
-                raise ValidationFailed(obj)
+                raise SerializerValidationFailed(obj)
         return self.serializer(obj)
