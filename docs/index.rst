@@ -1,7 +1,7 @@
-Yummy Cereal
+Randutils
 ============
 
-Welcome to Yummy Cereal's documentation!
+Welcome to Randutils's documentation!
 
 .. raw:: html
    :file: static/README.html

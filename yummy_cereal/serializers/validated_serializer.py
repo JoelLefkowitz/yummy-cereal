@@ -1,7 +1,10 @@
 from dataclasses import dataclass
-from typing import Dict, List, TypeVar
+from typing import Dict
+from typing import List
+from typing import TypeVar
 
-from ..protocols import Serializer, Validator
+from ..protocols import Serializer
+from ..protocols import Validator
 from .exceptions import SerializerValidationFailed
 
 T = TypeVar("T")

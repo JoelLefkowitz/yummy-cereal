@@ -1,8 +1,9 @@
 from typing import Any
 
 import pytest
-
-from yummy_cereal import Parser, ParserValidationFailed, ValidatedParser
+from yummy_cereal import Parser
+from yummy_cereal import ParserValidationFailed
+from yummy_cereal import ValidatedParser
 
 
 def test_ValidatedParser(value_parser: Parser[Any]) -> None:

@@ -104,7 +104,7 @@ And then create parsers:
 
 ```python
   dish_parser = AnnotationsParser(Dish)
-  
+
   course_parser = AnnotationsParser(Course, specified_parsers={Dish: dish_parser})
 
   menu_parser = AnnotationsParser(
@@ -184,7 +184,6 @@ multi-job tests
 
 Additionally, an html report will be saved to the local directory.
 
-
 ### Contributing
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests.
@@ -221,12 +220,9 @@ None yet!
 [license]: https://img.shields.io/github/license/joellefkowitz/yummy-cereal
 [release]: https://img.shields.io/github/v/tag/joellefkowitz/yummy-cereal
 [pypi_downloads]: https://img.shields.io/pypi/dw/yummy-cereal
-
 [pypi]: https://img.shields.io/pypi/v/yummy-cereal "PyPi"
 [pypi_link]: https://pypi.org/project/yummy-cereal
-
 [issues]: https://img.shields.io/github/issues/joellefkowitz/yummy-cereal "Issues"
 [issues_link]: https://github.com/JoelLefkowitz/yummy-cereal/issues
-
 [pulls]: https://img.shields.io/github/issues-pr/joellefkowitz/yummy-cereal "Pull requests"
 [pulls_link]: https://github.com/JoelLefkowitz/yummy-cereal/pulls

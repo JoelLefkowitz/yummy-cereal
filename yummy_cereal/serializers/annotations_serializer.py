@@ -1,19 +1,23 @@
-from dataclasses import dataclass, field
-from typing import Any, Dict, Generic, List, TypeVar
+# TODO serializer output format yaml or json
+
+from dataclasses import dataclass
+from dataclasses import field
+from typing import Any
+from typing import Dict
+from typing import Generic
+from typing import List
+from typing import TypeVar
 
 from typing_inspect import get_args
 
-from ..protocols import Factory, SerializerMap
-from ..utils.annotations import (
-    field_is_generic_dict,
-    field_is_generic_list,
-    get_cls_annotations,
-)
-from .exceptions import (
-    DictFieldSerializingError,
-    ListFieldSerializingError,
-    MissingFieldError,
-)
+from ..protocols import Factory
+from ..protocols import SerializerMap
+from ..utils.annotations import field_is_generic_dict
+from ..utils.annotations import field_is_generic_list
+from ..utils.annotations import get_cls_annotations
+from .exceptions import DictFieldSerializingError
+from .exceptions import ListFieldSerializingError
+from .exceptions import MissingFieldError
 
 T = TypeVar("T")
 

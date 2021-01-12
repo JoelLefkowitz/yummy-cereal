@@ -1,6 +1,7 @@
 from typing import Any
 
-from yummy_cereal import OptionalParser, Parser
+from yummy_cereal import OptionalParser
+from yummy_cereal import Parser
 
 
 def test_OptionalParser(value_parser: Parser[Any]) -> None:

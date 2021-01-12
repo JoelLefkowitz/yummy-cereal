@@ -2,6 +2,7 @@ from setuptools import setup
 
 if __name__ == "__main__":
     setup(
+        entry_points={"console_scripts": ["yummy-cereal = yummy_cereal.__main__:entrypoint", "yummy_cereal = yummy_cereal.__main__:entrypoint"]},
         install_requires=[
             "dataclasses",
             "ruamel.yaml",

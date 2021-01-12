@@ -1,12 +1,11 @@
 from dataclasses import dataclass
-from typing import Dict, List
+from typing import Dict
+from typing import List
 
-from yummy_cereal.utils.annotations import (
-    cls_is_annotated,
-    field_is_generic_dict,
-    field_is_generic_list,
-    get_cls_annotations,
-)
+from yummy_cereal.utils.annotations import cls_is_annotated
+from yummy_cereal.utils.annotations import field_is_generic_dict
+from yummy_cereal.utils.annotations import field_is_generic_list
+from yummy_cereal.utils.annotations import get_cls_annotations
 
 
 @dataclass

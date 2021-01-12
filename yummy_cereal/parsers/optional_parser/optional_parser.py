@@ -1,8 +1,11 @@
 from dataclasses import dataclass
-from typing import Dict, Generic, Optional, TypeVar
+from typing import Dict
+from typing import Generic
+from typing import Optional
+from typing import TypeVar
 
-from ..protocols import Parser
-from .exceptions import FieldParsingError
+from ...protocols import Parser
+from ..exceptions import ParsingError
 
 T = TypeVar("T")
 
@@ -14,5 +17,5 @@ class OptionalParser(Generic[T]):
     def __call__(self, config: Dict) -> Optional[T]:
         try:
             return self.parser(config)
-        except FieldParsingError:
+        except ParsingError:
             return None

@@ -1,7 +1,11 @@
 from dataclasses import dataclass
-from typing import Dict, Generic, List, TypeVar
+from typing import Dict
+from typing import Generic
+from typing import List
+from typing import TypeVar
 
-from ..protocols import Parser, Validator
+from ...protocols import Parser
+from ...protocols import Validator
 from .exceptions import ParserValidationFailed
 
 T = TypeVar("T")

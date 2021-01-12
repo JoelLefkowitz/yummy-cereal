@@ -1,8 +1,9 @@
 from typing import Any
 
 import pytest
-
-from yummy_cereal import Serializer, SerializerValidationFailed, ValidatedSerializer
+from yummy_cereal import Serializer
+from yummy_cereal import SerializerValidationFailed
+from yummy_cereal import ValidatedSerializer
 
 
 def test_ValidatedSerializer(value_serializer: Serializer[Any]) -> None:

@@ -1,5 +1,8 @@
-from typing import Any, Dict, TypeVar
+from typing import Any
+from typing import Dict
+from typing import TypeVar
 
+from typing_inspect import get_args
 from typing_inspect import get_origin
 
 T = TypeVar("T")
@@ -38,29 +41,18 @@ def get_cls_annotations(cls: Any) -> Dict:
     return cls_annotations
 
 
-def field_is_generic_list(cls: Any, attr_name: str) -> bool:
-    """
-    Inspects if a class's attribute is a generic list
+def field_is_generic_list(field: Any) -> bool:
+    return get_origin(field) == list
 
-    Args:
-        cls (Any): Class to inspect 
 
-    Returns:
-        bool: True if attribute is a generic list
-    """
+def field_is_generic_dict(field: Any) -> bool:
+    return get_origin(field) == dict
+
+
+def get_primary_inner_type(field: Any) -> Any:
+    return get_args(field)[0]
+
+
+def is_named_class(cls: Any) -> bool:
     annotations = get_cls_annotations(cls)
-    return attr_name in annotations and get_origin(annotations[attr_name]) == list
-
-
-def field_is_generic_dict(cls: Any, attr_name: str) -> bool:
-    """
-    Inspects if a class's attribute is a generic dict
-
-    Args:
-        cls (Any): Class to inspect 
-
-    Returns:
-        bool: True if attribute is a generic dict
-    """
-    annotations = get_cls_annotations(cls)
-    return attr_name in annotations and get_origin(annotations[attr_name]) == dict
+    return len(annotations) == 2 and "name" in annotations

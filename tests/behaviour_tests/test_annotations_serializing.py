@@ -4,8 +4,10 @@
 from typing import Dict
 
 import pytest
-from pytest_bdd import given, scenario, then, when
-
+from pytest_bdd import given
+from pytest_bdd import scenario
+from pytest_bdd import then
+from pytest_bdd import when
 from yummy_cereal import AnnotationsSerializer
 
 from ..models.menus.course import Course
